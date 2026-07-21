@@ -1,0 +1,16 @@
+{
+    "document_type": "Mediation Form 6 - Settlement Agreement",
+    "template_file": "mediation_form6_settlement_agreement.docx",
+    "required_fields": ["member_name", "total_amount_due"],
+    "field_map": {
+        "case_no": "case_no",
+        "member_name": "member_name",
+        "civil_status": "civil_status",
+        "billing_address": "billing_address",
+        "total_amount_due": "total_amount_due",
+        "voucher_number": "voucher_number",
+        "payment_schedule": "payment_schedule",
+        "mediator": "mediator",
+        "agreement_date": "agreement_date"
+    }
+}

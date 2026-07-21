@@ -1,0 +1,10 @@
+{
+    "document_type": "Mediation Form 8 - Evaluation",
+    "template_file": "mediation_form8_evaluation.docx",
+    "required_fields": ["case_no"],
+    "field_map": {
+        "case_no": "case_no",
+        "mediator": "mediator",
+        "comments": "comments"
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "document_type": "Mediation Form 4 - Tracking Form",
+    "template_file": "mediation_form4_tracking.docx",
+    "required_fields": ["member_name"],
+    "field_map": {
+        "case_no": "case_no",
+        "mediator": "mediator",
+        "member_name": "member_name",
+        "billing_address": "billing_address",
+        "first_appearance_date": "first_appearance_date",
+        "reset_date": "reset_date",
+        "reset_reason": "reset_reason",
+        "mediation_result": "mediation_result"
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "document_type": "Mediation Form 2 - Formal Charge",
+    "template_file": "mediation_form2_formal_charge.docx",
+    "required_fields": ["member_name", "billing_address"],
+    "field_map": {
+        "case_no": "case_no",
+        "voucher_number": "voucher_number",
+        "member_name": "member_name",
+        "billing_address": "billing_address",
+        "age": "age",
+        "gender": "gender",
+        "civil_status": "civil_status",
+        "occupation": "occupation",
+        "contact_number": "contact_number",
+        "email": "email"
+    }
+}

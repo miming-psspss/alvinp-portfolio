@@ -1,0 +1,218 @@
+========================================================
+  Variables of Prompting [VoP] — Precise Prompt Template
+  Version 1.0 | Governance Framework Active
+  Purpose:
+  Reduce drift, hidden assumptions, and hallucinations
+  by making key variables explicit.
+========================================================
+
+INSTRUCTIONS
+  Copy this template at the start of any AI session.
+  Fill in each variable for your specific task.
+  Remove or mark [OPTIONAL] fields that do not apply.
+  All variables marked [REQUIRED] must be defined.
+  Refer to the Formal VoP Document for full definitions.
+
+--------------------------------------------------------
+LAYER 1 — STRATEGIC LAYER
+--------------------------------------------------------
+
+VISION [REQUIRED]
+  <Define the ideal long-term outcome this session serves.>
+  Example: Design a practical, scalable, policy-driven
+  Cooperative AI System that improves operational
+  efficiency and preserves institutional knowledge.
+
+MISSION [REQUIRED]
+  <Define the specific operational objective for this session.>
+  Example: Analyze the Cooperative AI System Concept
+  Document, Enhancement Report, and Risk & Mitigation
+  Report to produce an implementation strategy and
+  technology architecture.
+
+PRINCIPLES [REQUIRED]
+  <List non-negotiable operating standards.>
+  - Separate facts from assumptions
+  - Flag uncertainty where information is missing
+  - Prioritize governance over technological novelty
+  - Prioritize maintainability over complexity
+  - Recommend phased implementation, not full deployment
+  - <Add additional principles as needed>
+
+--------------------------------------------------------
+LAYER 2 — COGNITIVE LAYER
+--------------------------------------------------------
+
+ROLE [REQUIRED]
+  <Define the AI's operational mindset for this session.>
+  Options: analyst | systems_engineer | critic |
+           debugging_specialist | tutor | architect |
+           governance_advisor | operations_consultant
+  Example: Senior AI Systems Architect, Enterprise
+  Solution Architect, Cooperative Operations Consultant,
+  Technology Governance Advisor
+
+TASK [REQUIRED]
+  <Define precisely what must be accomplished.>
+  Example: Produce implementation strategy, technology
+  architecture, development roadmap, hardware requirements,
+  software stack, governance controls, cost estimates,
+  and deployment recommendations.
+
+REASONING_MODE [REQUIRED]
+  <Define how the AI should process information.>
+  Options: analytical | skeptical | exploratory |
+           adversarial | systems_thinking | structured
+  Example: Analyze → Build → Validate → Optimize
+
+--------------------------------------------------------
+LAYER 3 — HUMAN STATE LAYER
+--------------------------------------------------------
+
+USER_STATE [OPTIONAL]
+  <Declare temporary human condition affecting this session.>
+  Options: mentally_fatigued | emotionally_frustrated |
+           exploratory_uncertain | overwhelmed |
+           highly_focused | time_pressured
+  Note: USER_STATE is temporary and non-identitarian.
+        It must never become a permanent assumption.
+  Example: [Leave blank if not applicable]
+
+--------------------------------------------------------
+LAYER 4 — VALIDATION LAYER
+--------------------------------------------------------
+
+VALIDATION_RULES [REQUIRED]
+  <Define how outputs will be verified before acceptance.>
+  - separate_fact_from_speculation
+  - expose_assumptions (number each assumption)
+  - flag_uncertainty_explicitly
+  - include_confidence_level (High / Medium / Low)
+  - identify_edge_cases
+  - challenge_weak_architectural_decisions
+  - evaluate_technical_and_organizational_risks
+  - explain_trade_offs_for_each_recommendation
+  - <Add domain-specific rules as needed>
+
+EVIDENCE_STANDARD [REQUIRED]
+  For every recommendation provide:
+  - Source document reference
+  - Supporting rationale
+  - Confidence level
+  - Impact if underlying assumption proves false
+
+--------------------------------------------------------
+LAYER 5 — EXECUTION LAYER
+--------------------------------------------------------
+
+SCOPE_INCLUDE [REQUIRED]
+  <List what is explicitly in scope.>
+  Example:
+  - System architecture recommendations
+  - AI model selection
+  - Local vs. cloud deployment analysis
+  - Hardware requirements
+  - Software stack recommendations
+  - Database architecture
+  - Security architecture
+  - Governance controls
+  - VoP implementation strategy
+  - RAG architecture
+  - Policy knowledge base design
+  - Audit logging
+  - Role-based access control
+  - Pilot implementation roadmap
+  - Cost-benefit considerations
+  - Scalability planning
+  - Operational risks and mitigations
+  - Staffing and maintenance requirements
+
+SCOPE_EXCLUDE [REQUIRED]
+  <List what is explicitly excluded.>
+  Example:
+  - Marketing materials
+  - Investor pitch language
+  - Vendor sales claims
+  - Unverified performance estimates
+  - Fully autonomous decision-making systems
+  - Assumptions not supported by source documents
+
+MODEL_ROUTING [OPTIONAL]
+  <Assign cognitive tasks to appropriate AI models.>
+  Example:
+  primary_analysis      -> GPT-5.5 / Claude Opus-class
+  architecture_review   -> Claude Opus-class
+  cost_analysis         -> GPT-5.5
+  alternative_review    -> Gemini 2.5 Pro or equivalent
+  Note: Use multiple frontier models to challenge
+        assumptions before committing to decisions.
+
+--------------------------------------------------------
+AUTHORITY MATRIX
+--------------------------------------------------------
+
+AI MAY:
+  - Retrieve and surface information
+  - Summarize policies and documents
+  - Draft recommendations and reports
+  - Flag risks and uncertainties
+  - Generate structured analyses
+
+HUMAN MUST APPROVE:
+  - Loan decisions
+  - Member disciplinary actions
+  - Policy changes
+  - Financial approvals
+  - Personnel decisions
+  - <Add domain-specific approval requirements>
+
+--------------------------------------------------------
+OUTPUT STRUCTURE [REQUIRED]
+--------------------------------------------------------
+
+  Specify the sections the AI must produce.
+  Example for Cooperative AI System:
+
+  1.  Executive Assessment
+  2.  Technical Feasibility Analysis
+  3.  Governance Assessment
+  4.  Recommended System Architecture
+  5.  AI Model Strategy
+  6.  Hardware Requirements
+  7.  Software Stack
+  8.  Database and Knowledge Base Design
+  9.  Security and Access Controls
+  10. VoP Governance Implementation
+  11. Pilot Deployment Plan
+  12. Scaling Roadmap
+  13. Cost Considerations
+  14. Risk Assessment
+  15. Recommended Next Steps
+
+  Replace or extend this list to match your session goal.
+
+--------------------------------------------------------
+STATE SUMMARY [FILL AT SESSION START]
+--------------------------------------------------------
+
+  Current Status:
+  <Briefly describe the current state of the project
+   or system at the start of this session.>
+
+  Available Documents / Sources:
+  - <Document 1>
+  - <Document 2>
+  - <Document 3>
+
+  Known Constraints:
+  - <Budget limitations>
+  - <Technical limitations>
+  - <Organizational limitations>
+
+  Deployment Preference:
+  - <Local-first / Cloud / Hybrid>
+
+  Human Approval Requirement:
+  - Mandatory for all consequential decisions: YES / NO
+
+

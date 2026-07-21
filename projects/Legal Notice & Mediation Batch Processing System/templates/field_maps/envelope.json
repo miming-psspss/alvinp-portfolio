@@ -1,0 +1,10 @@
+{
+    "document_type": "Envelope",
+    "template_file": "envelope.docx",
+    "required_fields": ["member_name", "billing_address"],
+    "field_map": {
+        "case_no": "case_no",
+        "member_name": "member_name",
+        "billing_address": "billing_address"
+    }
+}

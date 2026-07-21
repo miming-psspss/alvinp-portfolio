@@ -1,0 +1,29 @@
+{
+    "document_type": "STATEMENT OF ACCOUNT",
+    "template_file": "statement_of_account.docx",
+    "required_fields": [
+        "member_name",
+        "billing_address",
+        "kind_of_loan",
+        "principal",
+        "date_granted",
+        "maturity_date",
+        "voucher_number",
+        "balance"
+    ],
+    "field_map": {
+        "member_name": "member_name",
+        "billing_address": "billing_address",
+        "kind_of_loan": "kind_of_loan",
+        "principal": "principal",
+        "date_granted": "date_granted",
+        "maturity_date": "maturity_date",
+        "voucher_number": "voucher_number",
+        "balance": "balance",
+        "amortization": "amortization",
+        "less_total_pdi": "less_total_pdi",
+        "less_total_pen": "less_total_pen",
+        "total_amount_due": "total_amount_due",
+        "case_no": "case_no"
+    }
+}

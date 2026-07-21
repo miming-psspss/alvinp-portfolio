@@ -1,0 +1,863 @@
+"""
+DATR File Processing Script - GUI Version for Linux Fedora
+CONFIDENTIAL - For authorized use only
+Password: <set by user, not stored in code>
+"""
+
+import os
+import sys
+import shutil
+import glob
+import subprocess
+import zipfile
+#import rarfile
+from datetime import datetime
+from pathlib import Path
+import platform
+import tkinter as tk
+from tkinter import ttk, filedialog, messagebox, scrolledtext
+import threading
+from queue import Queue
+import traceback
+
+class DATRProcessorGUI:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("ATM Data Extraction & Reporting System")
+        self.root.geometry("1200x800")
+        self.root.configure(bg='#2c3e50')
+        
+        # Set icon if available (optional)
+        try:
+            self.root.iconbitmap('icon.ico')
+        except:
+            pass
+        
+        # Variables - ALL THREE paths needed
+        self.source_path = tk.StringVar()  # Where RAR files are located
+        self.dest_path = tk.StringVar()    # Where DATR files should be saved
+        self.temp_path = tk.StringVar()    # Temporary extraction directory
+        self.rar_password = tk.StringVar(value="")
+        self.years = tk.StringVar(value="2024,2025,2026")
+        self.processing = False
+        self.stop_flag = False
+        self.log_queue = Queue()
+        
+        # Months mapping
+        self.MONTHS = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"]
+        
+        # Setup GUI
+        self.setup_gui()
+        
+        # Start log processing
+        self.process_log_queue()
+        
+        # Set default paths for Linux
+        self.set_default_linux_paths()
+        
+    def set_default_linux_paths(self):
+        """Set default paths for Linux Fedora"""
+        # Default source path (where RAR files are)
+        default_source = ""  # set your source folder path here
+        
+        # Default destination path (where DATR files should go)
+        default_dest = ""  # set your destination folder path here
+        
+        # Default temp path
+        default_temp = "/tmp/ATM_REPORT_TEMP"
+        
+        # Only set if not already set
+        if not self.source_path.get():
+            if os.path.exists(default_source):
+                self.source_path.set(default_source)
+            else:
+                # Try to find the correct path
+                home = os.path.expanduser("~")
+                possible_path = os.path.join(home, "Project_Work", "4-30-26", "PROJECT PORTFOLIOS", 
+                                            "ATM Data Extraction & Reporting Automation", "ATM REPORT")
+                if os.path.exists(possible_path):
+                    self.source_path.set(possible_path)
+                else:
+                    self.source_path.set(default_source)
+        
+        if not self.dest_path.get():
+            self.dest_path.set(default_dest)
+            # Create destination directory if it doesn't exist
+            os.makedirs(default_dest, exist_ok=True)
+        
+        if not self.temp_path.get():
+            self.temp_path.set(default_temp)
+            # Create temp directory if it doesn't exist
+            os.makedirs(default_temp, exist_ok=True)
+        
+    def setup_gui(self):
+        """Setup the main GUI interface"""
+        
+        # Create main container with scrollbar
+        main_container = ttk.Frame(self.root)
+        main_container.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        
+        # Configure styles
+        style = ttk.Style()
+        style.theme_use('clam')
+        style.configure('Title.TLabel', font=('Arial', 16, 'bold'), foreground='#3498db')
+        style.configure('Header.TLabel', font=('Arial', 12, 'bold'), foreground='#2c3e50')
+        style.configure('Success.TLabel', foreground='#27ae60')
+        style.configure('Error.TLabel', foreground='#e74c3c')
+        style.configure('Info.TLabel', foreground='#3498db')
+        
+        # Create notebook for tabs
+        self.notebook = ttk.Notebook(main_container)
+        self.notebook.pack(fill=tk.BOTH, expand=True)
+        
+        # Tab 1: Configuration
+        self.config_tab = ttk.Frame(self.notebook)
+        self.notebook.add(self.config_tab, text="Configuration")
+        self.setup_config_tab()
+        
+        # Tab 2: Processing
+        self.processing_tab = ttk.Frame(self.notebook)
+        self.notebook.add(self.processing_tab, text="Processing")
+        self.setup_processing_tab()
+        
+        # Tab 3: Logs
+        self.logs_tab = ttk.Frame(self.notebook)
+        self.notebook.add(self.logs_tab, text="Logs")
+        self.setup_logs_tab()
+        
+        # Tab 4: Help/About
+        self.help_tab = ttk.Frame(self.notebook)
+        self.notebook.add(self.help_tab, text="Help & About")
+        self.setup_help_tab()
+    def browse_source_path(self):
+        """Browse for source directory (where RAR files are)"""
+        path = filedialog.askdirectory(title="Select SOURCE Directory with RAR files")
+        if path:
+            self.source_path.set(path)
+            self.log_message(f"Source directory set to: {path}", "INFO")
+
+    def browse_dest_path(self):
+        """Browse for destination directory (where DATR files should go)"""
+        path = filedialog.askdirectory(title="Select DESTINATION Directory for DATR files")
+        if path:
+            self.dest_path.set(path)
+            self.log_message(f"Destination directory set to: {path}", "INFO")
+
+    def browse_temp_path(self):
+        """Browse for temp path"""
+        path = filedialog.askdirectory(title="Select Temporary Extraction Directory")
+        if path:
+            self.temp_path.set(path)
+            self.log_message(f"Temp directory set to: {path}", "INFO")    
+            
+    def setup_config_tab(self):
+        """Setup configuration tab"""
+        # Main frame
+        main_frame = ttk.Frame(self.config_tab, padding="20")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Title
+        title_label = ttk.Label(main_frame, text="ATM Data Extraction Configuration", style='Title.TLabel')
+        title_label.pack(pady=(0, 20))
+        
+        # System Info
+        sys_frame = ttk.LabelFrame(main_frame, text="System Information", padding="10")
+        sys_frame.pack(fill=tk.X, pady=(0, 15))
+        
+        ttk.Label(sys_frame, text=f"Operating System: {platform.system()} {platform.release()}", 
+                font=('Arial', 10)).pack(anchor=tk.W)
+        
+        # Check unrar installation on Linux
+        if platform.system() == "Linux":
+            unrar_path = shutil.which('unrar')
+            if unrar_path:
+                ttk.Label(sys_frame, text=f"✅ unrar found: {unrar_path}", 
+                        foreground='green').pack(anchor=tk.W)
+            else:
+                ttk.Label(sys_frame, text="❌ unrar NOT installed! Install with: sudo dnf install unrar", 
+                        foreground='red').pack(anchor=tk.W)
+        
+        # File Locations Frame
+        path_frame = ttk.LabelFrame(main_frame, text="File Locations", padding="10")
+        path_frame.pack(fill=tk.X, pady=(0, 15))
+        
+        # Source Directory (where RAR files are)
+        ttk.Label(path_frame, text="SOURCE Directory (RAR files location):", foreground='blue').grid(row=0, column=0, sticky=tk.W, pady=5)
+        ttk.Entry(path_frame, textvariable=self.source_path, width=60).grid(row=0, column=1, padx=(10, 10), pady=5)
+        ttk.Button(path_frame, text="Browse...", command=self.browse_source_path).grid(row=0, column=2, pady=5)
+        
+        # Destination Directory (where DATR files should go)
+        ttk.Label(path_frame, text="DESTINATION Directory (DATR files output):", foreground='green').grid(row=1, column=0, sticky=tk.W, pady=5)
+        ttk.Entry(path_frame, textvariable=self.dest_path, width=60).grid(row=1, column=1, padx=(10, 10), pady=5)
+        ttk.Button(path_frame, text="Browse...", command=self.browse_dest_path).grid(row=1, column=2, pady=5)
+        
+        # Temp Directory
+        ttk.Label(path_frame, text="Temporary Extraction Directory:").grid(row=2, column=0, sticky=tk.W, pady=5)
+        ttk.Entry(path_frame, textvariable=self.temp_path, width=60).grid(row=2, column=1, padx=(10, 10), pady=5)
+        ttk.Button(path_frame, text="Browse...", command=self.browse_temp_path).grid(row=2, column=2, pady=5)
+        
+        # Security
+        security_frame = ttk.LabelFrame(main_frame, text="Security Settings", padding="10")
+        security_frame.pack(fill=tk.X, pady=(0, 15))
+        
+        ttk.Label(security_frame, text="RAR Archive Password:").grid(row=0, column=0, sticky=tk.W, pady=5)
+        password_entry = ttk.Entry(security_frame, textvariable=self.rar_password, width=30, show="*")
+        password_entry.grid(row=0, column=1, padx=(10, 10), pady=5)
+        
+        # Show/hide password checkbox
+        self.show_password = tk.BooleanVar(value=False)
+        def toggle_password():
+            if self.show_password.get():
+                password_entry.config(show="")
+            else:
+                password_entry.config(show="*")
+        
+        ttk.Checkbutton(security_frame, text="Show Password", variable=self.show_password, 
+                    command=toggle_password).grid(row=0, column=2, pady=5)
+        
+        # Processing Settings
+        settings_frame = ttk.LabelFrame(main_frame, text="Processing Settings", padding="10")
+        settings_frame.pack(fill=tk.X, pady=(0, 15))
+        
+        ttk.Label(settings_frame, text="Years to Process (comma-separated):").grid(row=0, column=0, sticky=tk.W, pady=5)
+        ttk.Entry(settings_frame, textvariable=self.years, width=30).grid(row=0, column=1, padx=(10, 10), pady=5)
+        
+        ttk.Label(settings_frame, text="Example: 2024,2025,2026", font=('Arial', 8, 'italic')).grid(row=0, column=2, pady=5)
+        
+        # Save/Load Configuration buttons
+        button_frame = ttk.Frame(main_frame)
+        button_frame.pack(fill=tk.X, pady=(10, 0))
+        
+        ttk.Button(button_frame, text="Save Configuration", command=self.save_config).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="Load Configuration", command=self.load_config).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="Reset Defaults", command=self.reset_config).pack(side=tk.LEFT, padx=5)
+            
+    def browse_dest_path(self):
+        """Browse for destination directory (where DATR files should go)"""
+        path = filedialog.askdirectory(title="Select DESTINATION Directory for DATR files")
+        if path:
+            self.dest_path.set(path)
+            self.log_message(f"Destination directory set to: {path}", "INFO")
+            # Create the directory structure
+            self.create_destination_structure()
+            
+    def create_destination_structure(self):
+        """Create year folders in destination"""
+        if not self.dest_path.get():
+            return
+        
+        years_list = [y.strip() for y in self.years.get().split(',')]
+        for year in years_list:
+            year_folder = os.path.join(self.dest_path.get(), f"{year}_EMV")
+            os.makedirs(year_folder, exist_ok=True)
+            
+            # Create month folders
+            letter_index = 97
+            for month in self.MONTHS:
+                letter = chr(letter_index)
+                month_folder = os.path.join(year_folder, f"{letter}_{month}_{year}")
+                os.makedirs(month_folder, exist_ok=True)
+                letter_index += 1
+        
+        self.log_message(f"Destination folder structure created in: {self.dest_path.get()}", "SUCCESS")
+            
+    def setup_processing_tab(self):
+        """Setup processing tab"""
+        main_frame = ttk.Frame(self.processing_tab, padding="20")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Title
+        title_label = ttk.Label(main_frame, text="Process ATM Data", style='Title.TLabel')
+        title_label.pack(pady=(0, 20))
+        
+        # Status frame
+        status_frame = ttk.LabelFrame(main_frame, text="Current Status", padding="10")
+        status_frame.pack(fill=tk.X, pady=(0, 15))
+        
+        self.status_label = ttk.Label(status_frame, text="Ready to process", font=('Arial', 10))
+        self.status_label.pack()
+        
+        self.progress_bar = ttk.Progressbar(status_frame, mode='indeterminate')
+        self.progress_bar.pack(fill=tk.X, pady=(10, 0))
+        
+        # Statistics frame
+        stats_frame = ttk.LabelFrame(main_frame, text="Processing Statistics", padding="10")
+        stats_frame.pack(fill=tk.X, pady=(0, 15))
+        
+        # Create grid for stats
+        stats_grid = ttk.Frame(stats_frame)
+        stats_grid.pack()
+        
+        self.total_rar_var = tk.StringVar(value="0")
+        self.extracted_var = tk.StringVar(value="0")
+        self.failed_var = tk.StringVar(value="0")
+        self.errors_var = tk.StringVar(value="0")
+        
+        stats = [
+            ("Total RAR Files Found:", self.total_rar_var),
+            ("DATR Files Extracted:", self.extracted_var),
+            ("Failed Extractions:", self.failed_var),
+            ("Errors Encountered:", self.errors_var)
+        ]
+        
+        for i, (label, var) in enumerate(stats):
+            ttk.Label(stats_grid, text=label, font=('Arial', 10, 'bold')).grid(row=i, column=0, sticky=tk.W, pady=5, padx=5)
+            ttk.Label(stats_grid, textvariable=var, font=('Arial', 12), foreground='#3498db').grid(row=i, column=1, sticky=tk.W, pady=5, padx=20)
+        
+        # Current processing info
+        current_frame = ttk.LabelFrame(main_frame, text="Currently Processing", padding="10")
+        current_frame.pack(fill=tk.X, pady=(0, 15))
+        
+        self.current_file_label = ttk.Label(current_frame, text="None", font=('Arial', 9))
+        self.current_file_label.pack()
+        
+        # Control buttons
+        button_frame = ttk.Frame(main_frame)
+        button_frame.pack(fill=tk.X, pady=(10, 0))
+        
+        self.start_button = ttk.Button(button_frame, text="Start Processing", command=self.start_processing, width=20)
+        self.start_button.pack(side=tk.LEFT, padx=5)
+        
+        self.stop_button = ttk.Button(button_frame, text="Stop Processing", command=self.stop_processing, width=20, state='disabled')
+        self.stop_button.pack(side=tk.LEFT, padx=5)
+        
+        ttk.Button(button_frame, text="Clear Statistics", command=self.clear_stats, width=20).pack(side=tk.LEFT, padx=5)
+        
+    def setup_logs_tab(self):
+        """Setup logs tab"""
+        main_frame = ttk.Frame(self.logs_tab, padding="10")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Log display
+        self.log_text = scrolledtext.ScrolledText(main_frame, wrap=tk.WORD, width=100, height=40,
+                                                   font=('Consolas', 9))
+        self.log_text.pack(fill=tk.BOTH, expand=True)
+        
+        # Configure text tags for colors
+        self.log_text.tag_config('INFO', foreground='#3498db')
+        self.log_text.tag_config('SUCCESS', foreground='#27ae60')
+        self.log_text.tag_config('ERROR', foreground='#e74c3c')
+        self.log_text.tag_config('WARNING', foreground='#f39c12')
+        self.log_text.tag_config('DEBUG', foreground='#95a5a6')
+        
+        # Button frame
+        button_frame = ttk.Frame(main_frame)
+        button_frame.pack(fill=tk.X, pady=(10, 0))
+        
+        ttk.Button(button_frame, text="Clear Log", command=self.clear_log).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="Save Log", command=self.save_log).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="Copy to Clipboard", command=self.copy_log).pack(side=tk.LEFT, padx=5)
+        
+    def setup_help_tab(self):
+        """Setup help and about tab"""
+        main_frame = ttk.Frame(self.help_tab, padding="20")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Help text
+        help_text = f"""
+        ATM Data Extraction & Reporting System - Linux Version
+        ======================================================
+        
+        System Information:
+        ------------------
+        Operating System: {platform.system()} {platform.release()}
+        Python Version: {sys.version.split()[0]}
+        
+        System Requirements:
+        -------------------
+        • Linux Operating System (Fedora, Ubuntu, etc.)
+        • unrar installed (for RAR extraction)
+        • Python 3.7 or higher
+        • tkinter (usually included with Python)
+        
+        Installation Instructions for Fedora:
+        ------------------------------------
+        1. Install unrar: sudo dnf install unrar
+        2. Install Python packages: pip3 install rarfile
+        
+        How to Use:
+        -----------
+        1. Configure the base directory containing ATM reports
+        2. Set temporary extraction directory (default: /tmp)
+        3. Enter the RAR password for your archives
+        4. Specify years to process (comma-separated)
+        5. Click "Start Processing" to begin
+        
+        File Structure Expected:
+        ------------------------
+        BASE_PATH/
+        ├── 2024_EMV/
+        │   ├── a_January_2024/
+        │   ├── b_February_2024/
+        │   └── ...
+        ├── 2025_EMV/
+        └── 2026_EMV/
+        
+        Features:
+        ---------
+        • Automatic RAR file detection and extraction
+        • Handles multi-part RAR archives
+        • Password-protected archive support
+        • Progress tracking and logging
+        • Error handling and recovery
+        • Configuration save/load
+        • Cross-platform support (Linux/Windows)
+        
+        Troubleshooting:
+        ----------------
+        • Ensure unrar is installed: which unrar
+        • Check that RAR password is correct
+        • Verify folder permissions for extraction
+        • Check available disk space for temporary files
+        • Logs are saved for debugging
+        
+        Support:
+        --------
+        Contact: IT Support Department
+        Version: 2.0 (Linux GUI Edition)
+        """
+        
+        help_display = scrolledtext.ScrolledText(main_frame, wrap=tk.WORD, width=80, height=30,
+                                                  font=('Arial', 10))
+        help_display.insert('1.0', help_text)
+        help_display.config(state='disabled')
+        help_display.pack(fill=tk.BOTH, expand=True)
+        
+    def browse_base_path(self):
+        """Browse for base path"""
+        path = filedialog.askdirectory(title="Select ATM Report Base Directory")
+        if path:
+            self.base_path.set(path)
+            self.log_message(f"Base directory set to: {path}", "INFO")
+            
+    def browse_temp_path(self):
+        """Browse for temp path"""
+        path = filedialog.askdirectory(title="Select Temporary Extraction Directory")
+        if path:
+            self.temp_path.set(path)
+            self.log_message(f"Temp directory set to: {path}", "INFO")
+            
+    def save_config(self):
+        """Save configuration to file"""
+        try:
+            config_file = os.path.expanduser("~/atm_config.txt")
+            with open(config_file, 'w') as f:
+                f.write(f"SOURCE_PATH={self.source_path.get()}\n")
+                f.write(f"DEST_PATH={self.dest_path.get()}\n")
+                f.write(f"TEMP_PATH={self.temp_path.get()}\n")
+                f.write(f"RAR_PASSWORD={self.rar_password.get()}\n")
+                f.write(f"YEARS={self.years.get()}\n")
+            self.log_message(f"Configuration saved to {config_file}", "SUCCESS")
+            messagebox.showinfo("Success", "Configuration saved successfully!")
+        except Exception as e:
+            self.log_message(f"Error saving config: {str(e)}", "ERROR")
+            messagebox.showerror("Error", f"Failed to save configuration: {str(e)}")
+
+    def load_config(self):
+        """Load configuration from file"""
+        try:
+            config_file = os.path.expanduser("~/atm_config.txt")
+            if os.path.exists(config_file):
+                with open(config_file, 'r') as f:
+                    for line in f:
+                        if '=' in line:
+                            key, value = line.strip().split('=', 1)
+                            if key == "SOURCE_PATH":
+                                self.source_path.set(value)
+                            elif key == "DEST_PATH":
+                                self.dest_path.set(value)
+                            elif key == "TEMP_PATH":
+                                self.temp_path.set(value)
+                            elif key == "RAR_PASSWORD":
+                                self.rar_password.set(value)
+                            elif key == "YEARS":
+                                self.years.set(value)
+                self.log_message("Configuration loaded successfully", "SUCCESS")
+                messagebox.showinfo("Success", "Configuration loaded successfully!")
+            else:
+                messagebox.showwarning("Not Found", "No saved configuration found.")
+        except Exception as e:
+            self.log_message(f"Error loading config: {str(e)}", "ERROR")
+            messagebox.showerror("Error", f"Failed to load configuration: {str(e)}")
+            
+    def reset_config(self):
+        """Reset configuration to defaults"""
+        self.source_path.set("")
+        self.dest_path.set("")
+        self.temp_path.set("/tmp/ATM_REPORT_TEMP")
+        self.rar_password.set("")
+        self.years.set("2024,2025,2026")
+        self.set_default_linux_paths()
+        self.log_message("Configuration reset to defaults", "INFO")
+        messagebox.showinfo("Reset", "Configuration reset to default values.")
+        
+    def clear_stats(self):
+        """Clear statistics"""
+        self.total_rar_var.set("0")
+        self.extracted_var.set("0")
+        self.failed_var.set("0")
+        self.errors_var.set("0")
+        self.log_message("Statistics cleared", "INFO")
+        
+    def clear_log(self):
+        """Clear log display"""
+        self.log_text.delete(1.0, tk.END)
+        
+    def save_log(self):
+        """Save log to file"""
+        try:
+            log_content = self.log_text.get(1.0, tk.END)
+            log_file = f"atm_log_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+            with open(log_file, 'w', encoding='utf-8') as f:
+                f.write(log_content)
+            self.log_message(f"Log saved to {log_file}", "SUCCESS")
+            messagebox.showinfo("Success", f"Log saved to {log_file}")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to save log: {str(e)}")
+            
+    def copy_log(self):
+        """Copy log to clipboard"""
+        self.root.clipboard_clear()
+        self.root.clipboard_append(self.log_text.get(1.0, tk.END))
+        self.log_message("Log copied to clipboard", "INFO")
+        
+    def log_message(self, message, level="INFO"):
+        """Queue log message for display"""
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        log_entry = f"[{timestamp}] [{level}] {message}"
+        
+        # Add to queue for GUI update
+        self.log_queue.put((log_entry, level))
+        
+        # Also print to console for debugging
+        print(log_entry)
+        
+    def process_log_queue(self):
+        """Process queued log messages"""
+        try:
+            while not self.log_queue.empty():
+                log_entry, level = self.log_queue.get_nowait()
+                self.log_text.insert(tk.END, log_entry + "\n", level)
+                self.log_text.see(tk.END)
+        except:
+            pass
+        finally:
+            self.root.after(100, self.process_log_queue)
+            
+    def start_processing(self):
+        """Start the processing thread"""
+        # Validate inputs
+        if not self.source_path.get():
+            messagebox.showerror("Error", "Please select the SOURCE directory first!")
+            return
+        if not self.dest_path.get():
+            messagebox.showerror("Error", "Please select the DESTINATION directory first!")
+            return
+        if not self.temp_path.get():
+            messagebox.showerror("Error", "Please select the TEMPORARY directory first!")
+            return
+        if not os.path.exists(self.source_path.get()):
+            messagebox.showerror("Error", f"Source directory does not exist!\n{self.source_path.get()}")
+            return
+            
+        # Check for unrar on Linux
+        if platform.system() == "Linux" and not shutil.which('unrar'):
+            response = messagebox.askyesno(
+                "Missing Dependency",
+                "unrar is not installed!\n\n"
+                "This is required to extract RAR files.\n\n"
+                "Install it with: sudo dnf install unrar\n\n"
+                "Do you want to continue anyway?"
+            )
+            if not response:
+                return
+        
+        # Parse years
+        try:
+            years_list = [int(y.strip()) for y in self.years.get().split(',')]
+        except:
+            messagebox.showerror("Error", "Invalid years format! Use comma-separated numbers.")
+            return
+            
+        # Disable start button, enable stop button
+        self.start_button.config(state='disabled')
+        self.stop_button.config(state='normal')
+        self.processing = True
+        self.stop_flag = False
+        
+        # Start progress bar
+        self.progress_bar.start(10)
+        
+        # Clear statistics
+        self.clear_stats()
+        
+        # Start processing in separate thread
+        processing_thread = threading.Thread(target=self.run_processing, args=(years_list,))
+        processing_thread.daemon = True
+        processing_thread.start()
+        
+    def stop_processing(self):
+        """Stop the processing"""
+        self.stop_flag = True
+        self.log_message("Stop request received. Finishing current operation...", "WARNING")
+        
+    def run_processing(self, years_list):
+        """Main processing logic (runs in separate thread)"""
+        try:
+            self.log_message("="*50, "INFO")
+            self.log_message("DATR FILE PROCESSING - STARTED", "SUCCESS")
+            self.log_message(f"Source: {self.source_path.get()}", "INFO")
+            self.log_message(f"Destination: {self.dest_path.get()}", "INFO")
+            self.log_message("="*50, "INFO")
+            
+            # Setup directories
+            os.makedirs(self.temp_path.get(), exist_ok=True)
+            os.makedirs(self.dest_path.get(), exist_ok=True)
+            
+            total_rar = 0
+            total_extracted = 0
+            total_failed = 0
+            
+            # Process each year
+            for year in years_list:
+                if self.stop_flag:
+                    break
+                    
+                self.log_message(f"\n{'='*40}", "INFO")
+                self.log_message(f"PROCESSING YEAR: {year}", "INFO")
+                self.log_message(f"{'='*40}", "INFO")
+                
+                # SOURCE folder (where RAR files are)
+                source_year_folder = os.path.join(self.source_path.get(), f"{year}_EMV")
+                
+                # DESTINATION folder (where DATR files should go)
+                dest_year_folder = os.path.join(self.dest_path.get(), f"{year}_EMV")
+                os.makedirs(dest_year_folder, exist_ok=True)
+                
+                if not os.path.exists(source_year_folder):
+                    self.log_message(f"Source year folder not found: {source_year_folder}", "WARNING")
+                    continue
+                
+                # Process each month
+                letter_index = 97
+                for month in self.MONTHS:
+                    if self.stop_flag:
+                        break
+                        
+                    letter = chr(letter_index)
+                    source_month_folder = os.path.join(source_year_folder, f"{letter}_{month}_{year}")
+                    dest_month_folder = os.path.join(dest_year_folder, f"{letter}_{month}_{year}")
+                    
+                    # Create destination month folder
+                    os.makedirs(dest_month_folder, exist_ok=True)
+                    
+                    rar_count, extracted_count, failed_count = self.process_month_folder(
+                        year, month, letter, source_month_folder, dest_month_folder
+                    )
+                    
+                    total_rar += rar_count
+                    total_extracted += extracted_count
+                    total_failed += failed_count
+                    
+                    # Update statistics
+                    self.root.after(0, lambda r=total_rar: self.total_rar_var.set(str(r)))
+                    self.root.after(0, lambda e=total_extracted: self.extracted_var.set(str(e)))
+                    self.root.after(0, lambda f=total_failed: self.failed_var.set(str(f)))
+                    
+                    letter_index += 1
+                    if letter_index > 122:
+                        break
+            
+            # Final summary
+            self.log_message(f"\n{'='*50}", "SUCCESS")
+            self.log_message("PROCESSING COMPLETE", "SUCCESS")
+            self.log_message(f"{'='*50}", "SUCCESS")
+            self.log_message(f"TOTAL RAR FILES PROCESSED: {total_rar}", "INFO")
+            self.log_message(f"TOTAL DATR FILES EXTRACTED: {total_extracted}", "SUCCESS")
+            self.log_message(f"FAILED EXTRACTIONS: {total_failed}", "ERROR" if total_failed > 0 else "INFO")
+            
+        except Exception as e:
+            self.log_message(f"Unexpected error: {str(e)}", "ERROR")
+            self.log_message(traceback.format_exc(), "ERROR")
+        finally:
+            # Re-enable buttons
+            self.root.after(0, lambda: self.start_button.config(state='normal'))
+            self.root.after(0, lambda: self.stop_button.config(state='disabled'))
+            self.root.after(0, lambda: self.progress_bar.stop())
+            self.processing = False
+            
+            if self.stop_flag:
+                self.log_message("\nProcessing stopped by user", "WARNING")
+                messagebox.showwarning("Stopped", "Processing was stopped by user.")
+            elif 'Exception' not in locals():
+                messagebox.showinfo("Complete", "Processing completed successfully!")
+                
+    def process_month_folder(self, year, month, letter, source_folder, dest_folder):
+        """Process a single month folder with separate source and destination"""
+        self.root.after(0, lambda: self.status_label.config(text=f"Processing: {source_folder}"))
+        
+        self.log_message(f"\n--- Source: {source_folder} ---", "INFO")
+        self.log_message(f"--- Destination: {dest_folder} ---", "INFO")
+        
+        if not os.path.exists(source_folder):
+            self.log_message(f"Source folder not found: {source_folder}", "WARNING")
+            return 0, 0, 0
+        
+        # Find RAR files in SOURCE folder
+        rar_files = self.find_rar_files(source_folder)
+        extracted_count = 0
+        rar_count = len(rar_files)
+        failed_count = 0
+        
+        if not rar_files:
+            self.log_message(f"No RAR files found in {os.path.basename(source_folder)}", "INFO")
+            return 0, 0, 0
+        
+        self.log_message(f"Found {len(rar_files)} RAR file(s) to extract", "INFO")
+        
+        for rar_file in rar_files:
+            if self.stop_flag:
+                break
+                
+            rar_name = os.path.basename(rar_file)
+            self.root.after(0, lambda n=rar_name: self.current_file_label.config(text=f"Extracting: {n}"))
+            self.log_message(f"Extracting: {rar_name}", "INFO")
+            
+            # Create unique temp folder
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S_%f')[:-3]
+            extract_subfolder = os.path.join(self.temp_path.get(), f"{year}_{letter}_{month}_{timestamp}")
+            os.makedirs(extract_subfolder, exist_ok=True)
+            
+            # Extract RAR
+            if self.extract_rar_file(rar_file, extract_subfolder):
+                self.log_message(f"Successfully extracted: {rar_name}", "SUCCESS")
+                
+                # Find extracted DATR files
+                extracted_datr = self.find_datr_files(extract_subfolder)
+                
+                if extracted_datr:
+                    self.log_message(f"Found {len(extracted_datr)} DATR file(s) in archive", "SUCCESS")
+                    extracted_count += len(extracted_datr)
+                    
+                    # COPY to DESTINATION folder (not move, to be safe)
+                    for datr_file in extracted_datr:
+                        dest_path = os.path.join(dest_folder, os.path.basename(datr_file))
+                        
+                        # Handle duplicates
+                        if os.path.exists(dest_path):
+                            timestamp2 = datetime.now().strftime('%Y%m%d_%H%M%S')
+                            name, ext = os.path.splitext(os.path.basename(datr_file))
+                            new_filename = f"{name}_{timestamp2}{ext}"
+                            dest_path = os.path.join(dest_folder, new_filename)
+                            self.log_message(f"File exists, saving as: {new_filename}", "WARNING")
+                        
+                        # COPY to destination (preserve original in temp for verification)
+                        shutil.copy2(datr_file, dest_path)
+                        self.log_message(f"Copied to: {dest_path}", "SUCCESS")
+                else:
+                    self.log_message(f"No DATR files found in the extracted archive", "WARNING")
+            else:
+                self.log_message(f"Failed to extract: {rar_name}", "ERROR")
+                failed_count += 1
+            
+            # Clean up temp folder
+            if os.path.exists(extract_subfolder):
+                shutil.rmtree(extract_subfolder, ignore_errors=True)
+                
+            # Update progress
+            self.root.after(0, lambda: self.progress_bar.step(1))
+        
+        return rar_count, extracted_count, failed_count
+    
+    def find_rar_files(self, folder_path):
+        """Find all RAR files in a folder"""
+        rar_files = []
+        patterns = ["*.rar", "*.RAR", "*.part1.rar", "*.part01.rar"]
+        
+        for pattern in patterns:
+            found = glob.glob(os.path.join(folder_path, pattern))
+            for file in found:
+                if os.path.isfile(file) and file not in rar_files:
+                    rar_files.append(file)
+        
+        return rar_files
+    
+    def find_datr_files(self, folder_path):
+        """Find all DATR text files in a folder (recursively searches all subfolders)"""
+        datr_files = []
+        
+        # Use os.walk to search recursively through all subdirectories
+        for root_dir, dirs, files in os.walk(folder_path):
+            for file in files:
+                # Check if file is a DATR text file
+                if file.upper().startswith("DATR_") and (file.endswith(".txt") or file.endswith(".TXT")):
+                    full_path = os.path.join(root_dir, file)
+                    datr_files.append(full_path)
+                    self.log_message(f"Found DATR file: {os.path.relpath(full_path, folder_path)}", "DEBUG")
+        
+        # Also check for any txt files that might contain DATR in name (case insensitive)
+        for root_dir, dirs, files in os.walk(folder_path):
+            for file in files:
+                if file.lower().endswith('.txt') and 'datr' in file.lower():
+                    full_path = os.path.join(root_dir, file)
+                    if full_path not in datr_files:
+                        datr_files.append(full_path)
+                        self.log_message(f"Found additional DATR file: {os.path.relpath(full_path, folder_path)}", "DEBUG")
+        
+        return datr_files
+    
+    def extract_rar_with_linux_tool(self, rar_path, extract_to):
+        """Extract RAR file using Linux unrar command"""
+        
+        # Check if unrar is installed
+        if not shutil.which('unrar'):
+            self.log_message("unrar not found! Please install with: sudo dnf install unrar", "ERROR")
+            return False
+        
+        try:
+            # Use unrar command line tool
+            cmd = ['unrar', 'x', f'-p{self.rar_password.get()}', '-y', rar_path, f'{extract_to}/']
+            
+            self.log_message(f"Running: unrar x -p[PASSWORD] -y {os.path.basename(rar_path)}", "DEBUG")
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+            
+            if result.returncode == 0:
+                return True
+            else:
+                if "password" in result.stderr.lower() or "CRC" in result.stderr:
+                    self.log_message(f"Password incorrect or archive corrupted", "ERROR")
+                else:
+                    self.log_message(f"Exit code: {result.returncode}", "ERROR")
+                    if result.stderr:
+                        self.log_message(f"Error: {result.stderr[:200]}", "ERROR")
+                return False
+                
+        except subprocess.TimeoutExpired:
+            self.log_message(f"Extraction timeout (5 minutes)", "ERROR")
+            return False
+        except Exception as e:
+            self.log_message(f"Extraction error: {str(e)}", "ERROR")
+            return False
+
+    def extract_rar_file(self, rar_path, extract_to):
+        """Cross-platform RAR extraction wrapper"""
+        system = platform.system()
+        
+        if system == "Windows":
+            self.log_message("Windows extraction not implemented in this version", "ERROR")
+            return False
+        elif system == "Linux":
+            return self.extract_rar_with_linux_tool(rar_path, extract_to)
+        else:
+            self.log_message(f"Unsupported operating system: {system}", "ERROR")
+            return False
+
+def main():
+    """Main entry point"""
+    root = tk.Tk()
+    app = DATRProcessorGUI(root)
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()

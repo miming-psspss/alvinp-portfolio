@@ -1,0 +1,9 @@
+{
+    "document_type": "Mediation Form 5 - Agreement to Mediate",
+    "template_file": "mediation_form5_agreement_to_mediate.docx",
+    "required_fields": ["member_name"],
+    "field_map": {
+        "case_no": "case_no",
+        "member_name": "member_name"
+    }
+}

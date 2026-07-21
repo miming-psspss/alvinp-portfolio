@@ -1,0 +1,19 @@
+{
+    "document_type": "Mediation Form 9 - Mediator's Report",
+    "template_file": "mediation_form9_mediators_report.docx",
+    "required_fields": ["member_name"],
+    "field_map": {
+        "case_no": "case_no",
+        "member_name": "member_name",
+        "kind_of_loan": "kind_of_loan",
+        "reset_reason": "reset_reason",
+        "conference_date": "conference_date",
+        "conference_time": "conference_time",
+        "conference_venue": "conference_venue",
+        "failure_reason": "failure_reason",
+        "action_taken": "action_taken",
+        "returned_reason": "returned_reason",
+        "mediator": "mediator",
+        "report_date": "report_date"
+    }
+}

@@ -1,0 +1,113 @@
+# ============================================
+# BARANGAY BUDGET MANAGEMENT SYSTEM
+# Complete Setup and Run Script
+# ============================================
+
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "Barangay Budget Management System Setup" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host ""
+
+# Step 1: Navigate to project directory
+Write-Host "[1/6] Navigating to project directory..." -ForegroundColor Yellow
+$projectPath = "C:\Users\PC\Desktop\4-30-26\PROJECT PORTFOLIOS\Barangay Budget Management System\BARANGAY PROJECT"
+if (Test-Path $projectPath) {
+    cd $projectPath
+    Write-Host "✓ In project directory: $projectPath" -ForegroundColor Green
+} else {
+    Write-Host "✗ Project directory not found!" -ForegroundColor Red
+    Write-Host "Please update the projectPath variable in this script" -ForegroundColor Red
+    pause
+    exit
+}
+Write-Host ""
+
+# Step 2: Check Python 3.12
+Write-Host "[2/6] Checking Python 3.12..." -ForegroundColor Yellow
+$pythonVersion = py -3.12 --version
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "✓ $pythonVersion" -ForegroundColor Green
+} else {
+    Write-Host "✗ Python 3.12 not found! Please install Python 3.12 first." -ForegroundColor Red
+    pause
+    exit
+}
+Write-Host ""
+
+# Step 3: Upgrade pip
+Write-Host "[3/6] Upgrading pip..." -ForegroundColor Yellow
+py -3.12 -m pip install --upgrade pip
+Write-Host "✓ pip upgraded" -ForegroundColor Green
+Write-Host ""
+
+# Step 4: Install required packages
+Write-Host "[4/6] Installing required packages..." -ForegroundColor Yellow
+Write-Host "This may take a few minutes..." -ForegroundColor Gray
+
+$packages = @(
+    "pandas",
+    "openpyxl", 
+    "numpy",
+    "mysql-connector-python",
+    "sqlalchemy",
+    "reportlab",
+    "xlsxwriter",
+    "pillow"
+)
+
+foreach ($package in $packages) {
+    Write-Host "  Installing $package..." -ForegroundColor Gray
+    py -3.12 -m pip install $package
+}
+
+Write-Host "✓ All packages installed" -ForegroundColor Green
+Write-Host ""
+
+# Step 5: Create necessary directories
+Write-Host "[5/6] Creating necessary directories..." -ForegroundColor Yellow
+$directories = @("data", "exports", "reports", "logs")
+foreach ($dir in $directories) {
+    if (!(Test-Path $dir)) {
+        New-Item -ItemType Directory -Path $dir -Force | Out-Null
+        Write-Host "  ✓ Created $dir folder" -ForegroundColor Gray
+    }
+}
+Write-Host "✓ Directories ready" -ForegroundColor Green
+Write-Host ""
+
+# Step 6: Run the application
+Write-Host "[6/6] Launching Barangay Budget Management System..." -ForegroundColor Yellow
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "Default Login Credentials:" -ForegroundColor White
+Write-Host "  Username: admin" -ForegroundColor Green
+Write-Host "  Password: admin123" -ForegroundColor Green
+Write-Host ""
+Write-Host "IMPORTANT: DO NOT CLOSE THIS WINDOW" -ForegroundColor Red
+Write-Host "The application is running in this window." -ForegroundColor Red
+Write-Host "Closing this window will close the application." -ForegroundColor Red
+Write-Host ""
+Write-Host "To stop the application, press Ctrl+C" -ForegroundColor Yellow
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host ""
+
+# Run the app
+py -3.12 app.py
+
+# If app closes, show error
+if ($LASTEXITCODE -ne 0) {
+    Write-Host ""
+    Write-Host "========================================" -ForegroundColor Red
+    Write-Host "Application closed with an error." -ForegroundColor Red
+    Write-Host "Please check the error messages above." -ForegroundColor Red
+    Write-Host "========================================" -ForegroundColor Red
+    Write-Host ""
+    Write-Host "Common fixes:" -ForegroundColor Yellow
+    Write-Host "1. Check if database file exists" -ForegroundColor Gray
+    Write-Host "2. Run 'py -3.12 -m pip install --upgrade pip'" -ForegroundColor Gray
+    Write-Host "3. Check for missing imports in the error above" -ForegroundColor Gray
+}
+
+Write-Host ""
+Write-Host "Press any key to close this window..." -ForegroundColor Yellow
+pause

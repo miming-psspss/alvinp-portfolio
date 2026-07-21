@@ -1,0 +1,16 @@
+{
+    "document_type": "Mediation Form 3 - Notice",
+    "template_file": "mediation_form3_notice.docx",
+    "required_fields": ["member_name", "billing_address"],
+    "field_map": {
+        "case_no": "case_no",
+        "voucher_number": "voucher_number",
+        "member_name": "member_name",
+        "billing_address": "billing_address",
+        "notice_date": "notice_date",
+        "conference_round": "conference_round",
+        "conference_date": "conference_date",
+        "conference_time": "conference_time",
+        "conference_venue": "conference_venue"
+    }
+}

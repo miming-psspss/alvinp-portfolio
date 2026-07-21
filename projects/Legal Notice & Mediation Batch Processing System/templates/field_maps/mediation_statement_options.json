@@ -1,0 +1,11 @@
+{
+    "document_type": "Mediation Statement Options",
+    "template_file": "mediation_statement_options.docx",
+    "required_fields": ["member_name", "balance"],
+    "field_map": {
+        "case_no": "case_no",
+        "member_name": "member_name",
+        "balance": "balance",
+        "statement_date": "end_of_calculation"
+    }
+}
