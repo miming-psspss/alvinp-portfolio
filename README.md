@@ -30,7 +30,7 @@ cas-n8n-vop-workflow/ → active n8n build implementing CAS, governed by VoP (in
 
 | Project | Description |
 |---|---|
-| [ATM Data Extraction & Reporting Automation](./projects/atm-data-extraction-reporting) | Resolved a 3-year reporting backlog in a day; extracts transaction data from password-protected archives, cutting a multi-hour process to under 5 minutes |
+| [ATM Data Extraction & Reporting Automation](./projects/atm-data-extraction-reporting) | Resolved a 3-year reporting backlog in a day; extracts transaction data from password-protected archives, cutting a multi-hour process to under 5 minutes. Later generalized into the client-agnostic [Batch Financial Report Processing](./projects/batch-financial-report-processing) product |
 | [Legal Notice & Mediation Batch Processing System](./projects/legal-notice-mediation-batch-processing-system) | Python/PySide6 rebuild of a live VBA production tool, all 11 real document types wired up, cut document generation from hours to under 1 minute. See the project README for the reverse-engineering story and `ORIGINAL_VBA_CONTEXT.md` for the source system it replaced |
 | Loan Processing & Automation System | Amortization, interest, insurance, and payment tracking for 7,000+ loan accounts, live in daily production since 2022 (original workbook confidential; see [project note](./projects/loan-processing-automation-system)) |
 | Savings Interest Extractor & Interest Calculator | Automates quarterly interest calculation across 7,000+ savings and share-capital accounts, Python/Pandas/OpenPyXL (see [project note](./projects/savings-interest-extractor-calculator)) |
@@ -43,7 +43,7 @@ cas-n8n-vop-workflow/ → active n8n build implementing CAS, governed by VoP (in
 |---|---|
 | [Barangay Budget Management System](./projects/barangay-budget-management-system) | Role-based financial management with approval workflows and audit logging |
 | [Cooperative Banking System Prototype](./projects/cooperative-banking-system-prototype) | Teller system covering cash management, savings, and interest |
-| [Batch Financial Report Processing](./projects/batch-financial-report-processing) | Two-part VA-facing guide + tool for batch password-protected archive extraction and report consolidation, packaged with install scripts and walkthrough PDFs |
+| [Batch Financial Report Processing](./projects/batch-financial-report-processing) | Two-part VA-facing guide + tool for batch password-protected archive extraction and report consolidation, packaged with install scripts and walkthrough PDFs. Generalized from the SAMCO-specific [ATM Data Extraction & Reporting Automation](./projects/atm-data-extraction-reporting) tool into a client-agnostic product |
 
 Some production systems ship as documentation only (no code) where the original file
 contains confidential SAMCO member or financial data and couldn't be safely anonymized,
