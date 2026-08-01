@@ -1,0 +1,1093 @@
+Sub Submit()
+    Dim sh As Worksheet
+    Dim sr As Worksheet
+    Dim lp As Worksheet
+    Dim iRow As Long
+    Dim originalActiveSheet As Worksheet ' To store the sheet active when Submit starts
+    
+    ' Capture the sheet that is active when the macro begins
+    Set originalActiveSheet = ActiveSheet
+    
+    Set sh = ThisWorkbook.Sheets("DATABASE")
+    Set sr = ThisWorkbook.Sheets("2500 UP")
+    Set lp = ThisWorkbook.Sheets("LITTLE PAPERS")
+    
+    ' Find the next empty row in Column A of the DATABASE sheet
+    iRow = sh.Cells(Rows.Count, 1).End(xlUp).row + 1
+    
+    ' --- Data Submission Logic ---
+    With sh
+        ' Check if data already exists in the previous row of DATABASE
+        If iRow > 1 And sr.Range("D4").Value = .Cells(iRow - 1, 3).Value Then
+            MsgBox "Data for '" & sr.Range("D4").Value & "' already exists in the database. Submission cancelled.", vbExclamation
+            originalActiveSheet.Activate ' Return to the original sheet
+            Exit Sub ' Stop the macro here
+        End If
+        
+        ' Populate the next row in the DATABASE sheet
+        .Cells(iRow, 1).Value = Format(Now(), "MM-DD-YYYY") ' Formats current date as MM-DD-YYYY
+        .Cells(iRow, 2).Value = iRow + 157409
+        .Cells(iRow, 3).Value = sr.Range("D4").Value
+        .Cells(iRow, 4).Value = sr.Range("D5").Value
+        .Cells(iRow, 5).Value = sr.Range("D6").Value
+        .Cells(iRow, 6).Value = sr.Range("D7").Value
+        .Cells(iRow, 7).Value = sr.Range("Q13").Value
+        .Cells(iRow, 8).Value = sr.Range("Q15").Value
+        .Cells(iRow, 9).Value = sr.Range("Q23").Value
+        ' ADDED: Insurance data from D26 to Column J
+        .Cells(iRow, 10).Value = sr.Range("D26").Value ' INSURANCE
+        
+    End With
+    
+    ' Update values on the '2,500 UP' sheet
+sr.Range("D8").Value = iRow + 157409
+    
+    ' --- Save to LITTLE PAPERS Sheet ---
+    ' FIXED: Now passing all 4 required parameters
+    SaveToLittlePapers lp, sh, sr, iRow
+    ThisWorkbook.Save
+
+    ' --- Printing Logic - Based on F6 Value (Printing Each Sheet Individually) ---
+    Dim f6Value As String
+    ' Assuming F6 is on the "2500 UP" sheet
+    f6Value = sr.Range("F6").Value ' Adjust this line if F6 is on a different sheet
+
+    On Error GoTo SheetNotFoundErrorHandler
+
+    Select Case f6Value
+        Case "RENEWAL", "RENEWAL_EMERGENCY"
+            ' Print "2500 UP"
+            Sheets("2500 UP").Select
+            Application.CommandBars.ExecuteMso "FilePrint"
+            
+            ' Print "PN & LEDGER"
+            Sheets("PN & LEDGER").Select
+            Application.CommandBars.ExecuteMso "FilePrint"
+            
+            sr.Range("D19").ClearContents ' Clears the content of cell E19 on '2,500 UP'
+            sr.Range("D17").ClearContents ' Clears the content of cell E19 on '2,500 UP'
+            
+        Case "6 MONTHS"
+            ' Print "2500 UP"
+            Sheets("2500 UP").Select
+            Application.CommandBars.ExecuteMso "FilePrint"
+            
+            ' Print "SIX (6) MONTHS"
+            Sheets("SIX (6) MONTHS").Select
+            Application.CommandBars.ExecuteMso "FilePrint"
+            
+            ' Print "PN & LEDGER (2)" for this case
+            Sheets("PN & LEDGER (2)").Select
+            Application.CommandBars.ExecuteMso "FilePrint"
+            
+        Case "1 YEAR"
+            ' Print "2500 UP"
+            Sheets("2500 UP").Select
+            Application.CommandBars.ExecuteMso "FilePrint"
+            
+            ' Print "ONE YEAR"
+            Sheets("ONE YEAR").Select
+            Application.CommandBars.ExecuteMso "FilePrint"
+            
+            ' Print "PN & LEDGER (2)" for this case
+            Sheets("PN & LEDGER (2)").Select
+            Application.CommandBars.ExecuteMso "FilePrint"
+            
+                        
+            sr.Range("D19").ClearContents ' Clears the content of cell E19 on '2,500 UP'
+            sr.Range("D17").ClearContents ' Clears the content of cell E19 on '2,500 UP'
+            
+        Case "2 YEARS"
+            ' Print "2500 UP"
+            Sheets("2500 UP").Select
+            Application.CommandBars.ExecuteMso "FilePrint"
+            
+            ' Print "TWO YEARS"
+            Sheets("TWO YEARS").Select
+            Application.CommandBars.ExecuteMso "FilePrint"
+            
+            ' Print "PN & LEDGER (2)" for this case
+            Sheets("PN & LEDGER (2)").Select
+            Application.CommandBars.ExecuteMso "FilePrint"
+            
+                        
+            sr.Range("D19").ClearContents ' Clears the content of cell E19 on '2,500 UP'
+            sr.Range("D17").ClearContents ' Clears the content of cell E19 on '2,500 UP'
+            
+        Case "3 YEARS"
+            ' Print "2500 UP"
+            Sheets("2500 UP").Select
+            Application.CommandBars.ExecuteMso "FilePrint"
+            
+            ' Print "TWO YEARS"
+            Sheets("THREE YEARS").Select
+            Application.CommandBars.ExecuteMso "FilePrint"
+            
+            ' Print "PN & LEDGER (2)" for this case
+            Sheets("PN & LEDGER (2)").Select
+            Application.CommandBars.ExecuteMso "FilePrint"
+            
+                        
+            sr.Range("D19").ClearContents ' Clears the content of cell E19 on '2,500 UP'
+            sr.Range("D17").ClearContents ' Clears the content of cell E19 on '2,500 UP'
+            
+        Case Else
+        
+        
+            MsgBox "The value in cell F6 ('" & f6Value & "') does not correspond to any defined printing option.", vbInformation
+    End Select
+
+    On Error GoTo 0 ' Reset error handling to default
+    
+    ' Optional: Return to the sheet that was active at the very beginning of the macro
+    originalActiveSheet.Activate
+    
+    Exit Sub ' Exit the subroutine gracefully
+
+' --- Error Handling for Missing Sheets ---
+SheetNotFoundErrorHandler:
+    Dim missingSheetName As String
+    If Err.Number = 9 Then ' Subscript out of range error, typically for a missing sheet
+        ' Attempt to identify which specific sheet might be missing for a more helpful message
+        If InStr(LCase(Err.Description), "2500 up") > 0 Then missingSheetName = "'2500 UP'"
+        If InStr(LCase(Err.Description), "pn & ledger") > 0 Then
+            If missingSheetName <> "" Then missingSheetName = missingSheetName & " or "
+            missingSheetName = missingSheetName & "'PN & LEDGER'"
+        End If
+        If InStr(LCase(Err.Description), "pn & ledger (2)") > 0 Then ' Added check for new sheet name
+            If missingSheetName <> "" Then missingSheetName = missingSheetName & " or "
+            missingSheetName = missingSheetName & "'PN & LEDGER (2)'"
+        End If
+        If InStr(LCase(Err.Description), "SIX (6) MONTHS") > 0 Then
+            If missingSheetName <> "" Then missingSheetName = missingSheetName & " or "
+            missingSheetName = missingSheetName & "'SIX (6) MONTHS'"
+        End If
+        If InStr(LCase(Err.Description), "one year") > 0 Then
+            If missingSheetName <> "" Then missingSheetName = missingSheetName & " or "
+            missingSheetName = missingSheetName & "'ONE YEAR'"
+        End If
+        If InStr(LCase(Err.Description), "two years") > 0 Then
+            If missingSheetName <> "" Then missingSheetName = missingSheetName & " or "
+            missingSheetName = missingSheetName & "'TWO YEARS'"
+        End If
+        If InStr(LCase(Err.Description), "little papers") > 0 Then
+            If missingSheetName <> "" Then missingSheetName = missingSheetName & " or "
+            missingSheetName = missingSheetName & "'LITTLE PAPERS'"
+        End If
+        
+        If missingSheetName = "" Then missingSheetName = "one of the required sheets (check names: '2500 UP', 'PN & LEDGER', 'PN & LEDGER (2)', 'SIX (6) MONTHS', 'ONE YEAR', 'TWO YEARS', 'LITTLE PAPERS')"
+        
+        MsgBox "Error during printing: " & missingSheetName & " was not found in this workbook." & vbCrLf & _
+                "Please ensure it exists and is spelled correctly.", vbCritical
+    Else
+        MsgBox "An unexpected error occurred during printing: " & Err.Description, vbCritical
+    End If
+    
+    On Error Resume Next ' Ignore errors when trying to activate the original sheet
+    originalActiveSheet.Activate
+    
+End Sub
+
+Sub SaveToLittlePapers(lp As Worksheet, sh As Worksheet, sr As Worksheet, dbRow As Long)
+    ' This subroutine populates the LITTLE PAPERS sheet in a grid pattern
+    ' Now includes sr parameter for AS8 value
+    
+    On Error GoTo LittlePapersError
+    
+    ' Find the next available position in LITTLE PAPERS
+    Dim nextRow As Long
+    Dim nextCol As Long
+    FindNextLittlePapersPosition lp, nextRow, nextCol
+    
+    ' Debug: Show the position we're writing to
+    Debug.Print "Writing to LITTLE PAPERS - Row: " & nextRow & ", Col: " & nextCol
+    Debug.Print "Voucher: " & sh.Cells(dbRow, 2).Value
+    Debug.Print "Name: " & sh.Cells(dbRow, 3).Value
+    Debug.Print "Insurance: " & sh.Cells(dbRow, 10).Value
+    Debug.Print "AS8 Value: " & sr.Range("AS8").Value
+    
+    ' Get loan abbreviation once to use in multiple places
+    Dim loanAbbreviation As String
+    loanAbbreviation = GetLoanAbbreviation(sh.Cells(dbRow, 5).Value)
+    Debug.Print "Loan Abbreviation: " & loanAbbreviation
+    
+    ' Map data from DATABASE to LITTLE PAPERS according to specifications
+    With lp
+        ' DATABASE COLUMN A (DATE) = LITTLE PAPERS A3 (in the grid pattern)
+        .Cells(nextRow + 2, nextCol).Value = sh.Cells(dbRow, 1).Value ' Date
+        
+        ' COLUMN B (VOUCHER) = A1
+        .Cells(nextRow, nextCol).Value = sh.Cells(dbRow, 2).Value ' Voucher
+        
+        ' COLUMN E (LOAN) = A2 - Convert to abbreviation
+        .Cells(nextRow + 1, nextCol).Value = loanAbbreviation ' Loan abbreviation
+        
+        ' COLUMN C (NAME) = B1 MERGED WITH C1
+        .Range(.Cells(nextRow, nextCol + 1), .Cells(nextRow, nextCol + 2)).Merge
+        .Cells(nextRow, nextCol + 1).Value = sh.Cells(dbRow, 3).Value ' Name
+        
+        ' COLUMN F (AMOUNT) = B2
+        .Cells(nextRow + 1, nextCol + 1).Value = sh.Cells(dbRow, 6).Value ' Amount
+        
+        ' COLUMN G (INTEREST) = C3
+        .Cells(nextRow + 2, nextCol + 2).Value = sh.Cells(dbRow, 7).Value ' Interest
+        
+        ' COLUMN H (SR FEE) = C4
+        .Cells(nextRow + 3, nextCol + 2).Value = sh.Cells(dbRow, 8).Value ' SR Fee
+        
+        ' COLUMN I (CBU RET) = C5
+        .Cells(nextRow + 4, nextCol + 2).Value = sh.Cells(dbRow, 9).Value ' CBU Ret
+        
+        ' COLUMN J (INSURANCE) = C6
+        .Cells(nextRow + 5, nextCol + 2).Value = sh.Cells(dbRow, 10).Value ' INSURANCE
+        
+        ' ADDED: AS8 from "2500 UP" to C2, F2, I2, L2 positions
+        ' Calculate the target column for AS8 data
+        ' C=3, F=6, I=9, L=12 (these are +2, +5, +8, +11 from start column)
+        Dim as8TargetCol As Long
+        as8TargetCol = nextCol + 2 ' C position (3rd column in the group)
+        
+        ' Store AS8 value in the C2 position of current block
+        .Cells(nextRow + 1, as8TargetCol).Value = sr.Range("AS8").Value
+        
+        ' UPDATED: Use GetLoanAbbreviation function instead of static "SL"
+        .Cells(nextRow + 1, nextCol).Value = loanAbbreviation  ' Dynamic loan abbreviation
+        
+        ' Add static labels based on your template
+        .Cells(nextRow + 2, nextCol + 1).Value = "INTEREST"
+        .Cells(nextRow + 3, nextCol + 1).Value = "SERVICE"
+        .Cells(nextRow + 4, nextCol + 1).Value = "RETENTION"
+        .Cells(nextRow + 5, nextCol + 1).Value = "INSURANCE"
+    End With
+    
+    ' Show confirmation
+    MsgBox "Data successfully saved to DATABASE & LITTLE PAPERS!" & vbCrLf & _
+           "Position: Row " & nextRow & ", Column " & GetColumnLetter(nextCol) & vbCrLf & _
+           "Voucher: " & sh.Cells(dbRow, 2).Value & vbCrLf & _
+           "Loan Type: " & loanAbbreviation & vbCrLf & _
+           "Insurance: " & sh.Cells(dbRow, 10).Value & vbCrLf & _
+           "AS8 Value: " & sr.Range("AS8").Value, vbInformation
+    
+    Exit Sub
+
+LittlePapersError:
+    MsgBox "Error saving data to LITTLE PAPERS sheet: " & Err.Description, vbExclamation
+End Sub
+
+Sub FindNextLittlePapersPosition(lp As Worksheet, ByRef nextRow As Long, ByRef nextCol As Long)
+    ' This subroutine finds the next available position in the LITTLE PAPERS grid
+    ' Grid pattern: 4 records per row block (A-C, D-F, G-I, J-L), each record uses 6 rows
+    ' After filling row 1-6, proceed to row 7-12, then 13-18, etc.
+    
+    Const ROWS_PER_BLOCK As Long = 6  ' Each record block is 6 rows high
+    Const MAX_ROW_BLOCKS As Long = 50 ' Maximum 300 rows (50 blocks × 6 rows)
+    
+    Dim rowBlock As Long, colGroup As Long
+    Dim baseRow As Long
+    Dim startCols() As Variant
+    startCols = Array(1, 4, 7, 10) ' A, D, G, J (starting columns for each group)
+    
+    ' Check each row block (1-6, 7-12, 13-18, etc.)
+    For rowBlock = 0 To MAX_ROW_BLOCKS - 1
+        baseRow = (rowBlock * ROWS_PER_BLOCK) + 1
+        
+        ' Check each column group in this row block (A-C, D-F, G-I, J-L)
+        For colGroup = 0 To UBound(startCols)
+            nextCol = startCols(colGroup)
+            
+            ' Check if the voucher cell (A1 position in this block) is empty
+            If IsEmpty(lp.Cells(baseRow, nextCol).Value) Or lp.Cells(baseRow, nextCol).Value = "" Then
+                nextRow = baseRow
+                Debug.Print "Found empty position: Row " & nextRow & ", Col " & nextCol & " (" & GetColumnLetter(nextCol) & ")"
+                Debug.Print "AS8 will be stored at: Row " & (nextRow + 1) & ", Col " & (nextCol + 2) & " (" & GetColumnLetter(nextCol + 2) & "2)"
+                Exit Sub
+            End If
+        Next colGroup
+    Next rowBlock
+    
+    ' If all positions are full, start at the next available row block
+    nextRow = (MAX_ROW_BLOCKS * ROWS_PER_BLOCK) + 1
+    nextCol = 1 ' Start at column A
+    Debug.Print "All positions full, starting at: Row " & nextRow & ", Col " & nextCol
+End Sub
+
+
+Function GetColumnLetter(colNumber As Long) As String
+    GetColumnLetter = Split(Cells(1, colNumber).Address(True, False), "$")(0)
+End Function
+
+
+Function GetLoanAbbreviation(loanType As String) As String
+    ' Convert loan type to abbreviation with better matching
+    
+    ' Debug: Show what we're receiving
+    Debug.Print "GetLoanAbbreviation received: '" & loanType & "'"
+    Debug.Print "Length: " & Len(loanType)
+    
+    ' Handle empty or null values
+    If loanType = "" Or IsNull(loanType) Then
+        GetLoanAbbreviation = "UNKNOWN"
+        Exit Function
+    End If
+    
+    ' Clean the input - remove extra spaces and convert to uppercase
+    Dim cleanLoanType As String
+    cleanLoanType = UCase(Trim(loanType))
+    Debug.Print "Cleaned loan type: '" & cleanLoanType & "'"
+    
+    ' Convert loan type to abbreviation
+    Select Case cleanLoanType
+        ' Standard loan types
+        Case "SALARY LOAN", "SALARY", "SL"
+            GetLoanAbbreviation = "SL"
+            
+        Case "SMALL BUSINESS LOAN", "SMALL BUSINESS", "SBL", "BUSINESS LOAN"
+            GetLoanAbbreviation = "SBL"
+            
+        Case "EMERGENCY LOAN", "EMERGENCY", "EL"
+            GetLoanAbbreviation = "EL"
+            
+        Case "EMERGENCY LOAN 2500+", "EMERGENCY 2500+", "EL 2500+"
+            GetLoanAbbreviation = "EL"
+            
+        Case "HONORARIUM LOAN", "HONORARIUM", "HL"
+            GetLoanAbbreviation = "HL"
+            
+        ' Loan types with renewal suffix
+        Case "SALARY LOAN(RNWL)", "SALARY(RNWL)"
+            GetLoanAbbreviation = "SL(RNWL)"
+            
+        Case "SMALL BUSINESS LOAN(RNWL)", "SMALL BUSINESS(RNWL)", "BUSINESS LOAN(RNWL)", "SBL(RNWL)"
+            GetLoanAbbreviation = "SBL(RNWL)"
+            
+        Case "EMERGENCY LOAN(RNWL)", "EMERGENCY(RNWL)", "EL(RNWL)"
+            GetLoanAbbreviation = "EL(RNWL)"
+            
+        Case "EMERGENCY LOAN 2500+(RNWL)", "EMERGENCY 2500+(RNWL)", "EL 2500+(RNWL)"
+            GetLoanAbbreviation = "EL(RNWL)"
+            
+        Case "HONORARIUM LOAN(RNWL)", "HONORARIUM(RNWL)", "HL(RNWL)"
+            GetLoanAbbreviation = "HL(RNWL)"
+            
+        ' Loan types with amortization suffix
+        Case "SALARY LOAN(AMRTZN)", "SALARY(AMRTZN)"
+            GetLoanAbbreviation = "SL(AMRTZN)"
+            
+        Case "SMALL BUSINESS LOAN(AMRTZN)", "SMALL BUSINESS(AMRTZN)", "BUSINESS LOAN(AMRTZN)", "SBL(AMRTZN)"
+            GetLoanAbbreviation = "SBL(AMRTZN)"
+            
+        Case "EMERGENCY LOAN(AMRTZN)", "EMERGENCY(AMRTZN)", "EL(AMRTZN)"
+            GetLoanAbbreviation = "EL(AMRTZN)"
+            
+        Case "EMERGENCY LOAN 2500+(AMRTZN)", "EMERGENCY 2500+(AMRTZN)", "EL 2500+(AMRTZN)"
+            GetLoanAbbreviation = "EL(AMRTZN)"
+            
+        ' RESERVED
+        Case "RESERVED"
+            GetLoanAbbreviation = "RESERVED"
+            
+        Case Else
+            ' If no match found, check if it contains keywords with suffixes
+            If InStr(1, cleanLoanType, "SALARY") > 0 Then
+                If InStr(1, cleanLoanType, "(RNWL)") > 0 Then
+                    GetLoanAbbreviation = "SL(RNWL)"
+                ElseIf InStr(1, cleanLoanType, "(AMRTZN)") > 0 Then
+                    GetLoanAbbreviation = "SL(AMRTZN)"
+                Else
+                    GetLoanAbbreviation = "SL"
+                End If
+            ElseIf InStr(1, cleanLoanType, "BUSINESS") > 0 Then
+                If InStr(1, cleanLoanType, "(RNWL)") > 0 Then
+                    GetLoanAbbreviation = "SBL(RNWL)"
+                ElseIf InStr(1, cleanLoanType, "(AMRTZN)") > 0 Then
+                    GetLoanAbbreviation = "SBL(AMRTZN)"
+                Else
+                    GetLoanAbbreviation = "SBL"
+                End If
+            ElseIf InStr(1, cleanLoanType, "EMERGENCY") > 0 Then
+                If InStr(1, cleanLoanType, "(RNWL)") > 0 Then
+                    GetLoanAbbreviation = "EL(RNWL)"
+                ElseIf InStr(1, cleanLoanType, "(AMRTZN)") > 0 Then
+                    GetLoanAbbreviation = "EL(AMRTZN)"
+                Else
+                    GetLoanAbbreviation = "EL"
+                End If
+            ElseIf InStr(1, cleanLoanType, "HONORARIUM") > 0 Then
+                If InStr(1, cleanLoanType, "(RNWL)") > 0 Then
+                    GetLoanAbbreviation = "HL(RNWL)"
+                ElseIf InStr(1, cleanLoanType, "(AMRTZN)") > 0 Then
+                    GetLoanAbbreviation = "HL(AMRTZN)"
+                Else
+                    GetLoanAbbreviation = "HL"
+                End If
+            Else
+                ' If no match found, return first 2 characters or original
+                Debug.Print "NO MATCH for: '" & cleanLoanType & "'"
+                If Len(cleanLoanType) >= 2 Then
+                    GetLoanAbbreviation = UCase(Left(cleanLoanType, 2))
+                Else
+                    GetLoanAbbreviation = cleanLoanType
+                End If
+            End If
+    End Select
+    
+    Debug.Print "Returning abbreviation: " & GetLoanAbbreviation
+End Function
+
+Sub PrintTodaysDatabase()
+    ' This subroutine filters and prints only today's data from DATABASE
+    
+    Dim sh As Worksheet
+    Dim originalActiveSheet As Worksheet
+    Dim todayDate As String
+    Dim todaySerial As Long
+    Dim lastRow As Long
+    Dim i As Long
+    Dim hasData As Boolean
+    Dim tempSheet As Worksheet
+    Dim destRow As Long
+    Dim cellValue As Variant
+    Dim cellText As String
+    
+    On Error GoTo ErrorHandler
+    
+    ' Store original active sheet
+    Set originalActiveSheet = ActiveSheet
+    
+    Set sh = ThisWorkbook.Sheets("DATABASE")
+    
+    ' Get today's date in multiple formats for comparison
+    todayDate = Format(Date, "MM-DD-YYYY")
+    todaySerial = CLng(Date) ' Excel date serial number
+    
+    ' Debug information
+    Debug.Print "Looking for date: " & todayDate
+    Debug.Print "Today's serial number: " & todaySerial
+    
+    ' Find last row in DATABASE Column A
+    lastRow = sh.Cells(sh.Rows.Count, 1).End(xlUp).row
+    
+    ' Check if we have data beyond header
+    If lastRow < 2 Then
+        MsgBox "No data found in DATABASE.", vbInformation
+        Exit Sub
+    End If
+    
+    ' Check if any data exists for today using multiple methods
+    hasData = False
+    For i = 2 To lastRow
+        cellValue = sh.Cells(i, 1).Value
+        cellText = sh.Cells(i, 1).Text
+        
+        ' Debug each cell
+        Debug.Print "Row " & i & " - Value: " & cellValue & " | Text: " & cellText & " | Type: " & TypeName(cellValue)
+        
+        ' Method 1: Compare as text (if stored as string)
+        If cellText = todayDate Then
+            hasData = True
+            Debug.Print "TEXT MATCH at row " & i
+            Exit For
+        End If
+        
+        ' Method 2: Compare as date (if stored as date)
+        If IsDate(cellValue) Then
+            If Format(CDate(cellValue), "MM-DD-YYYY") = todayDate Then
+                hasData = True
+                Debug.Print "DATE MATCH at row " & i
+                Exit For
+            End If
+        End If
+        
+        ' Method 3: Compare Excel serial numbers
+        If IsNumeric(cellValue) Then
+            If CLng(cellValue) = todaySerial Then
+                hasData = True
+                Debug.Print "SERIAL MATCH at row " & i
+                Exit For
+            End If
+        End If
+    Next i
+    
+    If Not hasData Then
+        ' Show what dates were actually found
+        Dim sampleDates As String
+        sampleDates = "First 5 dates found in Column A:" & vbCrLf
+        For i = 2 To Application.Min(lastRow, 6)
+            sampleDates = sampleDates & "Row " & i & ": '" & sh.Cells(i, 1).Text & "'" & vbCrLf
+        Next i
+        
+        MsgBox "No data found for today's date (" & todayDate & ") in the DATABASE." & vbCrLf & vbCrLf & _
+               sampleDates & vbCrLf & _
+               "Please check the date format in Column A.", vbInformation
+        Exit Sub
+    End If
+    
+    ' Create a temporary sheet to copy today's data
+    Application.ScreenUpdating = False
+    
+    ' Delete temp sheet if it exists
+    On Error Resume Next
+    Application.DisplayAlerts = False
+    ThisWorkbook.Sheets("TempPrint").Delete
+    Application.DisplayAlerts = True
+    On Error GoTo ErrorHandler
+    
+    ' Add new temp sheet
+    Set tempSheet = ThisWorkbook.Sheets.Add
+    tempSheet.Name = "TempPrint"
+    
+    ' Copy headers from DATABASE
+    sh.Rows(1).Copy tempSheet.Rows(1)
+    
+    ' Copy today's data using the same matching logic
+    destRow = 2
+    For i = 2 To lastRow
+        cellValue = sh.Cells(i, 1).Value
+        cellText = sh.Cells(i, 1).Text
+        
+        Dim isMatch As Boolean
+        isMatch = False
+        
+        ' Use the same matching logic as above
+        If cellText = todayDate Then
+            isMatch = True
+        ElseIf IsDate(cellValue) Then
+            If Format(CDate(cellValue), "MM-DD-YYYY") = todayDate Then
+                isMatch = True
+            End If
+        ElseIf IsNumeric(cellValue) Then
+            If CLng(cellValue) = todaySerial Then
+                isMatch = True
+            End If
+        End If
+        
+        If isMatch Then
+            sh.Rows(i).Copy tempSheet.Rows(destRow)
+            destRow = destRow + 1
+        End If
+    Next i
+    
+    ' Auto-fit columns for better print view
+    tempSheet.Cells.EntireColumn.AutoFit
+    
+    ' APPLY CUSTOM PRINT SETTINGS
+    With tempSheet.PageSetup
+        ' Set margins (in inches)
+        .TopMargin = 1
+        .BottomMargin = 1
+        .LeftMargin = 0.5
+        .RightMargin = 0.5
+        ' Set orientation to landscape
+        .Orientation = xlLandscape
+        
+        ' Set paper size to Letter
+        .PaperSize = xlPaperLetter
+        
+        ' Optional: Fit to one page wide
+        .FitToPagesWide = 1
+        .FitToPagesTall = False
+        
+        ' Optional: Center on page
+        .CenterHorizontally = True
+        .CenterVertically = False
+    End With
+    
+    ' Show print preview with custom settings
+    tempSheet.PrintPreview
+    
+    ' Clean up - delete temp sheet
+    Application.DisplayAlerts = False
+    tempSheet.Delete
+    Application.DisplayAlerts = True
+    
+    Application.ScreenUpdating = True
+    
+    MsgBox "Print preview showing today's data (" & todayDate & ") with custom print settings." & vbCrLf & _
+           "Found " & (destRow - 2) & " records." & vbCrLf & _
+           "You can print from the preview window.", vbInformation
+    
+    originalActiveSheet.Activate
+    Exit Sub
+
+ErrorHandler:
+    Application.ScreenUpdating = True
+    Application.DisplayAlerts = True
+    
+    ' Clean up temp sheet on error
+    On Error Resume Next
+    ThisWorkbook.Sheets("TempPrint").Delete
+    On Error GoTo 0
+    
+    MsgBox "Error: " & Err.Description & vbCrLf & _
+           "Please check the DATABASE sheet structure.", vbCritical
+    originalActiveSheet.Activate
+End Sub
+
+Sub PrintLittlePapersOnly()
+    ' This subroutine shows print preview of existing data, prints LITTLE PAPERS,
+    ' and clears the data after printing without any messages
+    
+    On Error GoTo PrintError
+    
+    Dim lp As Worksheet
+    Set lp = ThisWorkbook.Sheets("LITTLE PAPERS")
+    
+    ' Check if there's any data to print
+    If WorksheetFunction.CountA(lp.Range("A1:L100")) = 0 Then
+        Exit Sub
+    End If
+    
+    ' Show print dialogue and print
+    lp.PrintOut Preview:=True
+
+    
+    Exit Sub
+
+PrintError:
+    ' Error handling without message box - just exit quietly
+    Exit Sub
+End Sub
+
+
+
+Sub ProcessInsurance()
+    ' This subroutine processes insurance data based on age and amount conditions
+    
+    Dim sr As Worksheet
+    Dim targetSheet As Worksheet
+    Dim age As Integer
+    Dim amount As Double
+    Dim nextRow As Long
+    Dim originalActiveSheet As Worksheet
+    
+    ' Store original active sheet
+    Set originalActiveSheet = ActiveSheet
+    
+    Set sr = ThisWorkbook.Sheets("2500 UP")
+    
+    ' Get age and amount from "2500 UP" sheet
+    age = Val(sr.Range("D23").Value)
+    amount = Val(sr.Range("D7").Value)
+    
+    ' Debug information
+    Debug.Print "Age: " & age & ", Amount: " & amount
+    
+    ' Determine which sheet to use based on conditions
+    If age <= 65 Then
+        ' Store in "18 TO 65" sheet
+        Set targetSheet = ThisWorkbook.Sheets("18 TO 65")
+        nextRow = FindNextEmptyRow(targetSheet, 30) ' Start from row 30
+        StoreInsuranceData sr, targetSheet, nextRow, "B30"
+        MsgBox "Insurance data stored in '18 TO 65' sheet.", vbInformation
+        
+    ElseIf age >= 66 And age <= 70 Then
+        If amount <= 350000 Then
+            ' Store in "66 - 70 350k and below" sheet
+            Set targetSheet = ThisWorkbook.Sheets("66 - 70 350k and below")
+            nextRow = FindNextEmptyRow(targetSheet, 21) ' Start from row 21
+            StoreInsuranceData sr, targetSheet, nextRow, "B21"
+            MsgBox "Insurance data stored in '66 - 70 350k and below' sheet.", vbInformation
+        Else
+            ' Store in "66 - 70 350,001 and above" sheet
+            Set targetSheet = ThisWorkbook.Sheets("66 - 70 350,001 and above")
+            nextRow = FindNextEmptyRow(targetSheet, 20) ' Start from row 20
+            StoreInsuranceData sr, targetSheet, nextRow, "B20"
+            MsgBox "Insurance data stored in '66 - 70 350,001 and above' sheet.", vbInformation
+        End If
+        
+    ElseIf age >= 71 And age <= 75 Then
+        If amount <= 350000 Then
+            ' Store in "71 - 75 350k and below" sheet
+            Set targetSheet = ThisWorkbook.Sheets("71 - 75 350k and below")
+            nextRow = FindNextEmptyRow(targetSheet, 20) ' Start from row 20
+            StoreInsuranceData sr, targetSheet, nextRow, "B20"
+            MsgBox "Insurance data stored in '71 - 75 350k and below' sheet.", vbInformation
+        Else
+            ' NEW: Store in "71 - 75 350,001 and above" sheet
+            Set targetSheet = ThisWorkbook.Sheets("71 - 75 350,001 and above")
+            nextRow = FindNextEmptyRow(targetSheet, 20) ' Start from row 20
+            StoreInsuranceData sr, targetSheet, nextRow, "B20"
+            MsgBox "Insurance data stored in '71 - 75 350,001 and above' sheet.", vbInformation
+        End If
+        
+    Else
+        MsgBox "No matching insurance category found for:" & vbCrLf & _
+               "Age: " & age & vbCrLf & _
+               "Amount: " & Format(amount, "#,##0.00"), vbExclamation
+        originalActiveSheet.Activate
+        Exit Sub
+    End If
+    
+    originalActiveSheet.Activate
+End Sub
+
+Sub StoreInsuranceData(sr As Worksheet, ts As Worksheet, rowNum As Long, startCell As String)
+    ' This subroutine stores insurance data to the target sheet
+    
+    On Error GoTo InsuranceError
+    
+    ' Store data from "2500 up" sheet to "INSURANCE" sheet in the next available row
+    Dim wsInsurance As Worksheet
+    Set wsInsurance = ThisWorkbook.Worksheets("INSURANCE")
+    
+    ' Find the next available row in INSURANCE sheet (start from row 2)
+    Dim nextRow As Long
+    nextRow = 2
+    Do While wsInsurance.Cells(nextRow, 1).Value <> ""
+        nextRow = nextRow + 1
+    Loop
+    
+    ' Clear the entire row before writing to INSURANCE sheet
+    wsInsurance.Rows(nextRow).ClearContents
+    
+    ' Store data in the next available row
+    wsInsurance.Cells(nextRow, 2).Value = sr.Range("D21").Value      ' Column B
+    wsInsurance.Cells(nextRow, 3).Value = sr.Range("D4").Value       ' Column C
+    wsInsurance.Cells(nextRow, 4).Value = sr.Range("D5").Value       ' Column D
+    wsInsurance.Cells(nextRow, 5).Value = sr.Range("D22").Value      ' Column E
+    wsInsurance.Cells(nextRow, 6).Value = sr.Range("D23").Value      ' Column F
+    wsInsurance.Cells(nextRow, 7).Value = sr.Range("D24").Value      ' Column G
+    wsInsurance.Cells(nextRow, 8).Value = sr.Range("D27").Value      ' Column H
+    wsInsurance.Cells(nextRow, 9).Value = sr.Range("D7").Value       ' Column I
+    wsInsurance.Cells(nextRow, 10).Value = sr.Range("Q25").Value     ' Column J
+    wsInsurance.Cells(nextRow, 11).Value = sr.Range("D10").Value     ' Column K
+    wsInsurance.Cells(nextRow, 12).Value = sr.Range("F10").Value     ' Column L
+    wsInsurance.Cells(nextRow, 1).Value = sr.Range("D10").Value      ' Column A
+    wsInsurance.Cells(nextRow, 13).Value = sr.Range("D27").Value     ' Column M
+    wsInsurance.Cells(nextRow, 14).Value = sr.Range("G27").Value     ' Column N
+    wsInsurance.Cells(nextRow, 16).Value = sr.Range("G28").Value     ' Column P
+    wsInsurance.Cells(nextRow, 15).Value = sr.Range("D19").Value     ' Column O
+    wsInsurance.Cells(nextRow, 17).Value = sr.Range("G29").Value     ' Column Q
+    
+    With ts
+        ' Determine column positions based on start cell
+        Dim startCol As Integer
+        startCol = Range(startCell).Column
+        
+        ' Clear the target row before writing
+        .Rows(rowNum).ClearContents
+        
+        ' Store data based on the target sheet type
+        If ts.Name = "18 TO 65" Then
+            ' Clear and merge
+            .Range(.Cells(rowNum, 3), .Cells(rowNum, 5)).ClearContents
+            .Range(.Cells(rowNum, 3), .Cells(rowNum, 5)).Merge
+            .Cells(rowNum, 3).Value = sr.Range("D4").Value ' Name
+            
+            .Cells(rowNum, startCol).Value = sr.Range("D21").Value
+            .Cells(rowNum, startCol + 4).Value = sr.Range("D22").Value
+            .Cells(rowNum, startCol + 6).Value = sr.Range("D24").Value
+            .Cells(rowNum, startCol + 11).Value = sr.Range("D25").Value
+            .Cells(rowNum, startCol + 7).Value = sr.Range("D7").Value
+            .Cells(rowNum, startCol + 8).Value = sr.Range("D10").Value
+            .Cells(rowNum, startCol + 9).Value = sr.Range("F10").Value
+            
+            ' N30 -> D26 (store back to 2500 UP)
+            sr.Range("D26").Value = .Cells(rowNum, startCol + 12).Value
+            
+        ElseIf ts.Name = "66 - 70 350k and below" Then
+            .Range(.Cells(rowNum, 3), .Cells(rowNum, 5)).ClearContents
+            .Range(.Cells(rowNum, 3), .Cells(rowNum, 5)).Merge
+            .Cells(rowNum, 3).Value = sr.Range("D4").Value
+            
+            .Cells(rowNum, startCol).Value = sr.Range("D21").Value
+            .Cells(rowNum, startCol + 4).Value = sr.Range("D22").Value
+            .Cells(rowNum, startCol + 6).Value = sr.Range("D24").Value
+            .Cells(rowNum, startCol + 11).Value = sr.Range("D25").Value
+            .Cells(rowNum, startCol + 7).Value = sr.Range("D7").Value
+            .Cells(rowNum, startCol + 8).Value = sr.Range("D10").Value
+            .Cells(rowNum, startCol + 9).Value = sr.Range("F10").Value
+            
+            sr.Range("D26").Value = .Cells(rowNum, startCol + 12).Value
+            
+        ' ... (repeat the ClearContents pattern for other sheet types)
+        ' ... (other ElseIf blocks with same modifications)
+        
+        End If
+    End With
+    
+    ' Debug output
+    Debug.Print "Data stored in " & ts.Name & " at row " & rowNum
+    Debug.Print "Data stored in INSURANCE sheet at row " & nextRow
+    
+    Exit Sub
+
+InsuranceError:
+    MsgBox "Error storing insurance data: " & Err.Description, vbExclamation
+    Resume Next
+End Sub
+
+
+
+' --- Function to Find Next Empty Row ---
+Function FindNextEmptyRow(ws As Worksheet, startRow As Long) As Long
+    ' This function finds the next empty row in the specified column
+    
+    Dim lastRow As Long
+    Dim col As Integer
+    
+    ' Determine which column to check based on start position
+    If startRow = 30 Then
+        col = 2 ' Column B for rows starting at 30
+    ElseIf startRow = 21 Then
+        col = 2 ' Column B for rows starting at 21
+    Else
+        col = 2 ' Column B for rows starting at 20
+    End If
+    
+    ' Find the last used row in the specified column
+    lastRow = ws.Cells(ws.Rows.Count, col).End(xlUp).row
+    
+    ' If no data found, return start row
+    If lastRow < startRow Then
+        FindNextEmptyRow = startRow
+    Else
+        ' Find next empty cell in the column starting from startRow
+        Dim i As Long
+        For i = startRow To lastRow + 1
+            If ws.Cells(i, col).Value = "" Then
+                FindNextEmptyRow = i
+                Exit Function
+            End If
+        Next i
+        FindNextEmptyRow = lastRow + 1
+    End If
+    
+    Debug.Print "Next empty row in " & ws.Name & ": " & FindNextEmptyRow
+End Function
+
+
+'Main Function
+
+Function SpellNumber(ByVal MyNumber)
+
+Dim Pesos, Cents, Temp
+
+Dim DecimalPlace, Count
+
+ReDim Place(9) As String
+
+Place(2) = " Thousand "
+
+Place(3) = " Million "
+
+Place(4) = " Billion "
+
+Place(5) = " Trillion "
+
+' String representation of amount.
+
+MyNumber = Trim(Str(MyNumber))
+
+' Position of decimal place 0 if none.
+
+DecimalPlace = InStr(MyNumber, ".")
+
+' Convert cents and set MyNumber to dollar amount.
+
+If DecimalPlace > 0 Then
+
+Cents = GetTens(Left(Mid(MyNumber, DecimalPlace + 1) & "00", 2))
+
+MyNumber = Trim(Left(MyNumber, DecimalPlace - 1))
+
+End If
+
+Count = 1
+
+Do While MyNumber <> ""
+
+Temp = GetHundreds(Right(MyNumber, 3))
+
+If Temp <> "" Then Pesos = Temp & Place(Count) & Pesos
+
+If Len(MyNumber) > 3 Then
+
+MyNumber = Left(MyNumber, Len(MyNumber) - 3)
+
+Else
+
+MyNumber = ""
+
+End If
+
+Count = Count + 1
+
+Loop
+
+Select Case Pesos
+
+Case ""
+
+Pesos = "No Pesos"
+
+Case "One"
+
+Pesos = "One Pesos"
+
+Case Else
+
+Pesos = Pesos & " Pesos"
+
+End Select
+
+Select Case Cents
+
+Case ""
+
+Cents = " and No Cents"
+
+Case "One"
+
+Cents = " and One Cent"
+
+Case Else
+
+Cents = " and " & Cents & " Cents"
+
+End Select
+
+SpellNumber = Pesos & Cents
+
+End Function
+
+
+' Converts a number from 100-999 into text
+
+Function GetHundreds(ByVal MyNumber)
+
+Dim Result As String
+
+If Val(MyNumber) = 0 Then Exit Function
+
+MyNumber = Right("000" & MyNumber, 3)
+
+' Convert the hundreds place.
+
+If Mid(MyNumber, 1, 1) <> "0" Then
+
+Result = GetDigit(Mid(MyNumber, 1, 1)) & " Hundred "
+
+End If
+
+' Convert the tens and ones place.
+
+If Mid(MyNumber, 2, 1) <> "0" Then
+
+Result = Result & GetTens(Mid(MyNumber, 2))
+
+Else
+
+Result = Result & GetDigit(Mid(MyNumber, 3))
+
+End If
+
+GetHundreds = Result
+
+End Function
+
+
+' Converts a number from 10 to 99 into text.
+
+
+Function GetTens(TensText)
+
+Dim Result As String
+
+Result = "" ' Null out the temporary function value.
+
+If Val(Left(TensText, 1)) = 1 Then ' If value between 10-19...
+
+Select Case Val(TensText)
+
+Case 10: Result = "Ten"
+
+Case 11: Result = "Eleven"
+
+Case 12: Result = "Twelve"
+
+Case 13: Result = "Thirteen"
+
+Case 14: Result = "Fourteen"
+
+Case 15: Result = "Fifteen"
+
+Case 16: Result = "Sixteen"
+
+Case 17: Result = "Seventeen"
+
+Case 18: Result = "Eighteen"
+
+Case 19: Result = "Nineteen"
+
+Case Else
+
+End Select
+
+Else ' If value between 20-99...
+
+Select Case Val(Left(TensText, 1))
+
+Case 2: Result = "Twenty "
+
+Case 3: Result = "Thirty "
+
+Case 4: Result = "Forty "
+
+Case 5: Result = "Fifty "
+
+Case 6: Result = "Sixty "
+
+Case 7: Result = "Seventy "
+
+Case 8: Result = "Eighty "
+
+Case 9: Result = "Ninety "
+
+Case Else
+
+End Select
+
+Result = Result & GetDigit(Right(TensText, 1)) ' Retrieve ones place.
+
+End If
+
+GetTens = Result
+
+End Function
+
+
+' Converts a number from 1 to 9 into text.
+
+Function GetDigit(Digit)
+
+Select Case Val(Digit)
+
+Case 1: GetDigit = "One"
+
+Case 2: GetDigit = "Two"
+
+Case 3: GetDigit = "Three"
+
+Case 4: GetDigit = "Four"
+
+Case 5: GetDigit = "Five"
+
+Case 6: GetDigit = "Six"
+
+Case 7: GetDigit = "Seven"
+
+Case 8: GetDigit = "Eight"
+
+Case 9: GetDigit = "Nine"
+
+Case Else: GetDigit = ""
+
+End Select
+
+End Function
+
+
+
+
+

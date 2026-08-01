@@ -1,114 +1,88 @@
-# Alvin Piquero - Automation Portfolio
+# Alvin Piquero — IT Automation & Systems Specialist
 
-Welcome to my portfolio of Python automation projects. These scripts were built for real-world use in a financial cooperative with 7,000+ members.
-
----
-
-## 📌 About Me
-
-IT Automation Specialist and Systems Analyst with 4+ years of experience supporting business-critical financial operations, process automation, and end-user technology solutions. Experienced in designing and maintaining production VBA applications, Python automation tools, SQLite databases, ETL workflows, and reporting systems serving more than 7,000 cooperative members. Proven ability to investigate complex operational issues, implement practical technology solutions, optimize workflows, and provide technical support across software, hardware, and network environments. Skilled in leveraging AI-assisted development tools to accelerate research, troubleshooting, automation, and solution delivery while maintaining full responsibility for requirements analysis, testing, validation, and business outcomes. Advanced through Toptal's recruiter screening and communication assessment, progressing to the technical evaluation stage.
+Python and VBA automation projects built for real-world use in a financial cooperative
+serving 7,000+ members, plus a growing set of independent projects extending that work
+into new tools and platforms. Built end-to-end — requirements, design, deployment, and
+support — turning multi-hour manual processes into workflows that run in minutes, and
+improving data migration accuracy from roughly 70% to 99% at scale.
 
 - **Location:** Candijay, Bohol, Philippines
 - **Email:** alvin_piquero@outlook.ph
 - **LinkedIn:** https://www.linkedin.com/in/alvinpiquero481743254/
-- **Timezone:** PHT (UTC+8) - flexible overlap with US, UK, or AU
+- **Resume / CV:** see [`resume/`](./resume)
+- **Timezone:** PHT (UTC+8) — flexible overlap with US, UK, or AU
 
 ---
 
-## 🐍 Python and VBA Projects Included
+## Repository Structure
 
-| Project | Description | Status |
-|:---|:---|:---|
-| ATM Data Parser | Extracts and processes unstructured transaction logs from encrypted archives | ✅ Completed |
-| Database Editor GUI | Tkinter interface for non-technical staff to manage SQLite databases | ✅ Completed |
-| Teller System Prototype | Cash management, savings/cheque processing, interest calculation | 🔧 Prototype |
-| Banking System Prototype | Core banking operations simulation for feasibility testing | ✅ Completed |
-| Barangay Budget System | Role-based financial management with approval workflows | 🔧 Prototype |
-| Savings Interest Calculator | Automates quarterly interest calculation for 7,000+ accounts | ✅ Completed |
+```
+resume/              → resume and CV (PDF)
+projects/             → working software: what I built
+vop/                  → Variables of Prompting (VoP) — my framework for disciplined AI-assisted dev
+cas-planning-docs/    → planning docs for the Cooperative AI System (CAS) concept
+cas-n8n-vop-workflow/ → active n8n build implementing CAS, governed by VoP (in progress)
+```
 
----
+### `projects/`
 
-## 🤖 AI & Automation Projects
+**Production systems** (built and run live at Santa Ana Multi-Purpose Cooperative, SAMCO)
 
-| Project | Description | Status |
-|:---|:---|:---|
-| [CAS \u2014 n8n VoP Governance Workflow](./cas-n8n-vop-workflow) | Self-hosted n8n workflow validating a governance-aware AI decision process against fictional cooperative data (policy checks, requester/member lookup, escalation branching) | 🚧 In Progress (Phase 4 of 8) |
+| Project | Description |
+|---|---|
+| [ATM Data Extraction & Reporting Automation](./projects/atm-data-extraction-reporting) | Resolved a 3-year reporting backlog in a day; extracts transaction data from password-protected archives, cutting a multi-hour process to under 5 minutes |
+| [Legal Notice & Mediation Batch Processing System](./projects/legal-notice-mediation-batch-processing-system) | Python/PySide6 rebuild of a live VBA production tool — all 11 real document types wired up, cut document generation from hours to under 1 minute. See the project README for the reverse-engineering story and `ORIGINAL_VBA_CONTEXT.md` for the source system it replaced |
+| Loan Processing & Automation System | Amortization, interest, insurance, and payment tracking for 7,000+ loan accounts — live in daily production since 2022 (original workbook confidential; see [project note](./projects/loan-processing-automation-system)) |
+| Savings Interest Extractor & Interest Calculator | Automates quarterly interest calculation across 7,000+ savings and share-capital accounts, Python/Pandas/OpenPyXL (see [project note](./projects/savings-interest-extractor-calculator)) |
+| Collateral Data Entry System with Print Functions | VBA/Excel tool for structured collateral data entry with automated print formatting (see [project note](./projects/collateral-data-entry-system)) |
+| [Data Migration & Infrastructure Planning](./projects/data-migration-infrastructure-planning) | Tooling used for a 7,000+ account core-system migration, improving field-mapping accuracy from ~70% to 99% |
 
----
+**Independent / portfolio projects**
 
-## 📊 VBA Projects — Available Upon Request
+| Project | Description |
+|---|---|
+| [Barangay Budget Management System](./projects/barangay-budget-management-system) | Role-based financial management with approval workflows and audit logging |
+| [Cooperative Banking System Prototype](./projects/cooperative-banking-system-prototype) | Teller system covering cash management, savings, and interest |
+| [Batch Financial Report Processing](./projects/batch-financial-report-processing) | Two-part VA-facing guide + tool for batch password-protected archive extraction and report consolidation, packaged with install scripts and walkthrough PDFs |
 
-The following VBA systems are currently in production use at Santa Ana Multi-Purpose Cooperative (SAMCO), handling 7,000+ member accounts daily.
+Some production systems ship as documentation only (no code) where the original file
+contains confidential SAMCO member or financial data and couldn't be safely anonymized —
+each has a short note explaining what it does and why the source isn't included. I'm
+happy to walk through the architecture, share sanitized code samples, or do a live screen
+recording for recruiters or hiring managers. Email me to request access.
 
-These files **cannot be shared publicly** because they contain confidential financial logic, member data structures, and proprietary business rules belonging to SAMCO.
+### `vop/` — Variables of Prompting
 
-### VBA Systems Available for Review:
+My personal framework for structured, disciplined AI-assisted development — built from
+real prompt-drift failures and progressively formalized. Includes the formal spec, a
+risk/responsible-use document, and a working template.
 
-| Project | Description | Status |
-|:---|:---|:---|
-| Loan Processing System | Automates amortization schedules, interest calculations, payment tracking, insurance integration, disclosures, and promissory notes | ✅ Live (Daily use since 2022) |
-| Legal Notice Batch Processor | One-click engine that generates demand letters (1st/2nd), account summaries, and mediation forms for collection events | ✅ Live |
-| Collateral Data Entry & Document Automation | Stores collateral data and automates legal document generation for loan applications | ✅ Live |
+### `cas-planning-docs/` + `cas-n8n-vop-workflow/` — Cooperative AI System (CAS)
 
-### 📋 How to Request VBA Code Access
-
-I am happy to share **sanitized code samples** or discuss the architecture and logic of these systems with:
-
-- Recruiters verifying my technical skills
-- Hiring managers during interview processes
-- Fellow developers for learning or collaboration
-
-**To request access, please email me at:** `alvin_piquero@outlook.ph`
-
-**Include in your email:**
-- Your name and role/company
-- Which project(s) you are interested in
-- How you plan to use the code (e.g., "review for hiring decision," "learning purposes," "collaboration")
-
-**What I will send:**
-- Sanitized `.bas` files with confidential data removed
-- Or a detailed written explanation of the system architecture
-- Or a live screen recording demonstrating the system in action
-
-**What I cannot share:**
-- Files containing real member data
-- Files with SAMCO-specific business rules intact
-- Full production copies of the Excel workbooks
+CAS is a governance-first AI concept for cooperative environments: a workflow that checks
+requests against defined policy before responding, instead of an unconstrained model
+making judgment calls on its own. `cas-planning-docs/` holds the design docs (overview,
+core architecture, business case & risk, validation & rollout, build log).
+[`cas-n8n-vop-workflow/`](./cas-n8n-vop-workflow) is the active implementation — a
+self-hosted n8n + PostgreSQL build, currently in progress (Phase 2 of 6), tested against
+a fictional dataset. The README there tracks exact build status per stage and includes
+instructions to run it locally.
 
 ---
 
-## 🛠️ Tech Stack
+## Certifications
 
-| Category | Technologies |
-|:---|:---|
-| Programming | Python, VBA, PowerShell, CMD Scripting |
-| Data | SQLite, Pandas, ETL pipelines |
-| GUI | Tkinter |
-| Office | Excel (VBA macros, automation) |
+Google Cybersecurity Professional · Google IT Support Professional · Google AI Essentials
+— verified badges: credly.com/users/alvin-piquero
 
----
+## Tech Stack
 
-## 📁 Repository Structure
-
+Python · VBA · SQL/SQLite · PostgreSQL · PySide6 · Tkinter · n8n · ETL pipelines ·
+Excel automation · PowerShell
 
 ---
 
-## 📧 Contact
+## License
 
-For VBA code requests, questions about my experience, or job opportunities:
-
-- **Email:** alvin_piquero@outlook.ph
-- **LinkedIn:** https://www.linkedin.com/in/alvinpiquero481743254/
-- **GitHub:** (you are here)
-
----
-
-## 📝 License
-
-This portfolio is shared for **review and evaluation purposes**. Code may not be copied or redistributed without permission.
-
-For collaboration or employment opportunities, please reach out directly.
-
----
-
-*Last updated: August 2026*
+Shared for review and evaluation purposes. Code may not be copied or redistributed
+without permission. For collaboration or employment opportunities, reach out directly.

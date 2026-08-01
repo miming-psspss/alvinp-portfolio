@@ -1,0 +1,281 @@
+Option Explicit
+
+' =============================================
+' PART 1: STORE FROM DATA ENTRY TO DATA LIST & TEMPLATE 1
+' =============================================
+
+' Main subroutine to store data from DATA ENTRY to DATA LIST and TEMPLATE 1
+Sub StoreFromDataEntry()
+    Dim wsEntry As Worksheet, wsList As Worksheet, wsTemplate1 As Worksheet
+    Dim lastRow As Long
+    Dim i As Integer
+    
+    ' Set worksheet references
+    Set wsEntry = ThisWorkbook.Sheets("DATA ENTRY")
+    Set wsList = ThisWorkbook.Sheets("DATA LIST")
+    Set wsTemplate1 = ThisWorkbook.Sheets("TEMPLATE 1")
+    
+    ' Find next available row in DATA LIST
+    lastRow = wsList.Cells(wsList.Rows.Count, "A").End(xlUp).Row
+    If lastRow < 2 Then lastRow = 1 ' Start from row 2 if sheet is empty
+    
+    ' Copy data from DATA ENTRY (B2:B22) to DATA LIST (columns A-T)
+    For i = 1 To 21 ' Updated to 21 fields
+        wsList.Cells(lastRow + 1, i).Value = wsEntry.Range("B" & (i + 1)).Value
+    Next i
+    
+    ' Copy same data from DATA ENTRY to TEMPLATE 1 (J1:J21)
+    For i = 1 To 21 ' Updated to 21 fields
+        wsTemplate1.Range("J" & i).Value = wsEntry.Range("B" & (i + 1)).Value
+    Next i
+    
+    ' Clear the DATA ENTRY form (B2:B22)
+    wsEntry.Range("B2:B22").ClearContents
+    
+    ' Success message
+    MsgBox "Data stored to:" & vbNewLine & _
+           "1. DATA LIST (row " & (lastRow + 1) & ")" & vbNewLine & _
+           "2. TEMPLATE 1 (J1:J21)", vbInformation, "Storage Complete"
+    
+    ' Activate DATA LIST sheet
+    wsList.Activate
+End Sub
+
+' Subroutine to print TEMPLATE 1 with 4 copies
+Sub PrintTemplate1()
+    Dim wsTemplate1 As Worksheet
+    
+    ' Set worksheet reference
+    Set wsTemplate1 = ThisWorkbook.Sheets("TEMPLATE 1")
+    
+    ' Activate the template sheet
+    wsTemplate1.Activate
+    
+    ' Print the template with 4 copies
+    wsTemplate1.PrintOut Copies:=4
+    
+    ' Success message
+    MsgBox "TEMPLATE 1 printed successfully! (4 copies)", vbInformation, "Print Complete"
+End Sub
+
+' =============================================
+' PART 2: STORE FROM DATA LIST TO TEMPLATE 2
+' =============================================
+
+' Worksheet Change Event for DATA LIST - This should be placed in the DATA LIST worksheet code module
+Private Sub Worksheet_Change(ByVal Target As Range)
+    ' Check if the change is in Column V (column 22) - the PRINT column
+    ' Since we now have 21 data columns (A-U), PRINT column is now Column V
+    If Target.Column = 22 And Target.Row >= 2 Then
+        If UCase(Trim(Target.Value)) = "PRINT" Then
+            ' Call the subroutine to store data to TEMPLATE 2
+            StoreToTemplate2 Target.Row
+        End If
+    End If
+End Sub
+
+' Subroutine to store data from DATA LIST to TEMPLATE 2 (triggered by typing "PRINT" in Column V)
+Sub StoreToTemplate2(ByVal sourceRow As Long)
+    Dim wsList As Worksheet, wsTemplate2 As Worksheet
+    Dim i As Integer
+    
+    ' Set worksheet references
+    Set wsList = ThisWorkbook.Sheets("DATA LIST")
+    Set wsTemplate2 = ThisWorkbook.Sheets("TEMPLATE 2")
+    
+    ' Copy data from DATA LIST columns A-U (1-21) to TEMPLATE 2 J1:J21
+    For i = 1 To 21 ' Updated to 21 fields
+        wsTemplate2.Range("J" & i).Value = wsList.Cells(sourceRow, i).Value
+    Next i
+    
+    ' Clear the "PRINT" text in Column V (22) after copying
+    wsList.Cells(sourceRow, 22).ClearContents
+    
+    ' Success message and navigate to TEMPLATE 2
+    MsgBox "Data from DATA LIST row " & sourceRow & " stored to TEMPLATE 2 (J1:J21)!", vbInformation, "Data Transferred"
+    wsTemplate2.Activate
+End Sub
+
+' Button-triggered subroutine to store selected row from DATA LIST to TEMPLATE 2
+Sub ButtonStoreToTemplate2()
+    Dim wsList As Worksheet, wsTemplate2 As Worksheet
+    Dim currentRow As Long
+    Dim i As Integer
+    
+    ' Set worksheet references
+    Set wsList = ThisWorkbook.Sheets("DATA LIST")
+    Set wsTemplate2 = ThisWorkbook.Sheets("TEMPLATE 2")
+    
+    ' Check if we're in DATA LIST sheet
+    If ActiveSheet.Name <> wsList.Name Then
+        MsgBox "Please go to DATA LIST sheet and select a row first!", vbExclamation, "Action Required"
+        wsList.Activate
+        Exit Sub
+    End If
+    
+    ' Get the selected row
+    currentRow = ActiveCell.Row
+    
+    ' Check if it's a valid data row (row 2 or higher)
+    If currentRow < 2 Then
+        MsgBox "Please select a data row (row 2 or higher)!", vbExclamation, "Invalid Selection"
+        Exit Sub
+    End If
+    
+    ' Copy data from DATA LIST columns A-U (1-21) to TEMPLATE 2 J1:J21
+    For i = 1 To 21 ' Updated to 21 fields
+        wsTemplate2.Range("J" & i).Value = wsList.Cells(currentRow, i).Value
+    Next i
+    
+    ' Success message and navigate to TEMPLATE 2
+    MsgBox "Data from row " & currentRow & " stored to TEMPLATE 2 (J1:J21)!", vbInformation, "Data Transferred"
+    wsTemplate2.Activate
+End Sub
+
+' Subroutine to print TEMPLATE 2 with 4 copies
+Sub PrintTemplate2()
+    Dim wsTemplate2 As Worksheet
+    
+    ' Set worksheet reference
+    Set wsTemplate2 = ThisWorkbook.Sheets("TEMPLATE 2")
+    
+    ' Activate the template sheet
+    wsTemplate2.Activate
+    
+    ' Print the template with 4 copies
+    wsTemplate2.PrintOut Copies:=4
+    
+    ' Success message
+    MsgBox "TEMPLATE 2 printed successfully! (4 copies)", vbInformation, "Print Complete"
+End Sub
+
+' =============================================
+' PART 3: SETUP BUTTONS
+' =============================================
+
+' Subroutine to create all buttons (run this once)
+Sub CreateAllButtons()
+    Dim wsEntry As Worksheet, wsList As Worksheet
+    Dim wsTemplate1 As Worksheet, wsTemplate2 As Worksheet
+    Dim btnStoreEntry As Shape, btnStoreToList As Shape
+    Dim btnPrint1 As Shape, btnPrint2 As Shape
+    
+    ' Set worksheet references
+    Set wsEntry = ThisWorkbook.Sheets("DATA ENTRY")
+    Set wsList = ThisWorkbook.Sheets("DATA LIST")
+    Set wsTemplate1 = ThisWorkbook.Sheets("TEMPLATE")
+    Set wsTemplate2 = ThisWorkbook.Sheets("TEMPLATE 2")
+    
+    ' Clear existing buttons
+    ClearAllButtons
+    
+    ' 1. Create STORE button on DATA ENTRY sheet
+    Set btnStoreEntry = wsEntry.Shapes.AddFormControl(xlButtonControl, 150, 250, 150, 40)
+    With btnStoreEntry
+        .Name = "btnStoreEntry"
+        .OnAction = "StoreFromDataEntry"
+        With .TextFrame.Characters
+            .Text = "STORE TO:" & vbLf & "DATA LIST & TEMPLATE 1"
+            .Font.Size = 10
+            .Font.Bold = True
+        End With
+    End With
+    
+    ' 2. Create STORE TO TEMPLATE 2 button on DATA LIST sheet
+    Set btnStoreToList = wsList.Shapes.AddFormControl(xlButtonControl, 10, 10, 180, 35)
+    With btnStoreToList
+        .Name = "btnStoreToList"
+        .OnAction = "ButtonStoreToTemplate2"
+        With .TextFrame.Characters
+            .Text = "STORE SELECTED ROW TO TEMPLATE 2"
+            .Font.Size = 10
+            .Font.Bold = True
+        End With
+    End With
+    
+    ' 3. Create PRINT button on TEMPLATE 1 sheet
+    Set btnPrint1 = wsTemplate1.Shapes.AddFormControl(xlButtonControl, 50, 50, 120, 35)
+    With btnPrint1
+        .Name = "btnPrint1"
+        .OnAction = "PrintTemplate1"
+        With .TextFrame.Characters
+            .Text = "PRINT TEMPLATE 1"
+            .Font.Size = 11
+            .Font.Bold = True
+        End With
+    End With
+    
+    ' 4. Create PRINT button on TEMPLATE 2 sheet
+    Set btnPrint2 = wsTemplate2.Shapes.AddFormControl(xlButtonControl, 50, 50, 120, 35)
+    With btnPrint2
+        .Name = "btnPrint2"
+        .OnAction = "PrintTemplate2"
+        With .TextFrame.Characters
+            .Text = "PRINT TEMPLATE 2"
+            .Font.Size = 11
+            .Font.Bold = True
+        End With
+    End With
+    
+    ' Success message with instructions
+    MsgBox "BUTTONS CREATED SUCCESSFULLY!" & vbNewLine & vbNewLine & _
+           "HOW TO USE:" & vbNewLine & _
+           "1. DATA ENTRY SHEET:" & vbNewLine & _
+           "   • Enter data in B2:B22" & vbNewLine & _
+           "   • Click button to store to DATA LIST & TEMPLATE 1" & vbNewLine & vbNewLine & _
+           "2. DATA LIST SHEET:" & vbNewLine & _
+           "   • Option A: Type 'PRINT' in Column V to auto-store to TEMPLATE 2" & vbNewLine & _
+           "   • Option B: Select any row and click button to store to TEMPLATE 2" & vbNewLine & vbNewLine & _
+           "3. PRINTING:" & vbNewLine & _
+           "   • Use PRINT buttons on each Template sheet (4 copies)", _
+           vbInformation, "Setup Complete"
+End Sub
+
+' Helper subroutine to clear all buttons
+Sub ClearAllButtons()
+    Dim ws As Worksheet
+    
+    On Error Resume Next
+    For Each ws In ThisWorkbook.Worksheets
+        ws.Shapes("btnStoreEntry").Delete
+        ws.Shapes("btnStoreToList").Delete
+        ws.Shapes("btnPrint1").Delete
+        ws.Shapes("btnPrint2").Delete
+    Next ws
+    On Error GoTo 0
+End Sub
+
+' =============================================
+' ADDITIONAL: BACKUP SUBROUTINES
+' =============================================
+
+' Subroutine to load any row from DATA LIST to TEMPLATE 1 (if needed)
+Sub LoadToTemplate1()
+    Dim wsList As Worksheet, wsTemplate1 As Worksheet
+    Dim currentRow As Long
+    Dim i As Integer
+    
+    Set wsList = ThisWorkbook.Sheets("DATA LIST")
+    Set wsTemplate1 = ThisWorkbook.Sheets("TEMPLATE 1")
+    
+    If ActiveSheet.Name <> wsList.Name Then
+        MsgBox "Please go to DATA LIST sheet first!", vbExclamation, "Action Required"
+        wsList.Activate
+        Exit Sub
+    End If
+    
+    currentRow = ActiveCell.Row
+    
+    If currentRow < 2 Then
+        MsgBox "Please select a data row (row 2 or higher)!", vbExclamation, "Invalid Selection"
+        Exit Sub
+    End If
+    
+    For i = 1 To 21
+        wsTemplate1.Range("J" & i).Value = wsList.Cells(currentRow, i).Value
+    Next i
+    
+    MsgBox "Data from row " & currentRow & " loaded to TEMPLATE 1!", vbInformation, "Success"
+    wsTemplate1.Activate
+End Sub
+
