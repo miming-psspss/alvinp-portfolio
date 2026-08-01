@@ -32,7 +32,7 @@ IT Automation Specialist and Systems Analyst with 4+ years of experience support
 
 | Project | Description | Status |
 |:---|:---|:---|
-| [CAS \u2014 n8n VoP Governance Workflow](./cas-n8n-vop-workflow) | Self-hosted n8n workflow validating a governance-aware AI decision process against fictional cooperative data (policy checks, requester/member lookup, escalation branching) | 🚧 In Progress (Phase 2 of 6) |
+| [CAS \u2014 n8n VoP Governance Workflow](./cas-n8n-vop-workflow) | Self-hosted n8n workflow validating a governance-aware AI decision process against fictional cooperative data (policy checks, requester/member lookup, escalation branching) | 🚧 In Progress (Phase 4 of 8) |
 
 ---
 
