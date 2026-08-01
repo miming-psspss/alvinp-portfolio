@@ -1,0 +1,30 @@
+{
+  "case no.|member-patron's|billing address|age|gender|civil status|livelihood/occupation|contact number|email/social media address|voucher number|kind of loan|loan granted|principal|date granted|maturity date|end of calculation|number of days|amortization|balance|past due interest|penalty|less total pdi|less total pen|total amount due|sched|mediator|requesting|req_id|req_id no.|civil_stat|ai (amount)|aii (payment agreement)|res_id|res_id no.|res_id issued at|res_id issued on|status|cbu|print": {
+    "0": "case_no",
+    "1": "member_name",
+    "2": "billing_address",
+    "3": "age",
+    "4": "gender",
+    "5": "civil_status",
+    "6": "occupation",
+    "7": "contact_number",
+    "8": "email",
+    "16": "amortization",
+    "10": "kind_of_loan",
+    "11": "principal",
+    "12": "date_granted",
+    "13": "maturity_date",
+    "14": "end_of_calculation",
+    "15": "number_of_days",
+    "17": "balance",
+    "18": "past_due_interest",
+    "19": "penalty",
+    "20": "less_total_pdi",
+    "21": "less_total_pen",
+    "22": "total_amount_due",
+    "24": "mediator",
+    "35": "status",
+    "25": "authorized_representative",
+    "23": "payment_schedule"
+  }
+}

@@ -1,83 +1,114 @@
-# Alvin Piquero — IT Automation & Systems Specialist
+# Alvin Piquero - Automation Portfolio
 
-Python and VBA automation projects built for real-world use in a financial cooperative
-serving 7,000+ members, plus supporting methodology and process documentation. Built as
-the sole engineer end-to-end — requirements, design, deployment, and support — turning
-multi-hour manual processes into workflows that run in minutes, and improving data
-migration accuracy from roughly 70% to 99% at scale.
+Welcome to my portfolio of Python automation projects. These scripts were built for real-world use in a financial cooperative with 7,000+ members.
+
+---
+
+## 📌 About Me
+
+IT Automation Specialist and Systems Analyst with 4+ years of experience supporting business-critical financial operations, process automation, and end-user technology solutions. Experienced in designing and maintaining production VBA applications, Python automation tools, SQLite databases, ETL workflows, and reporting systems serving more than 7,000 cooperative members. Proven ability to investigate complex operational issues, implement practical technology solutions, optimize workflows, and provide technical support across software, hardware, and network environments. Skilled in leveraging AI-assisted development tools to accelerate research, troubleshooting, automation, and solution delivery while maintaining full responsibility for requirements analysis, testing, validation, and business outcomes. Advanced through Toptal's recruiter screening and communication assessment, progressing to the technical evaluation stage.
 
 - **Location:** Candijay, Bohol, Philippines
 - **Email:** alvin_piquero@outlook.ph
 - **LinkedIn:** https://www.linkedin.com/in/alvinpiquero481743254/
-- **Timezone:** PHT (UTC+8) — flexible overlap with US, UK, or AU
+- **Timezone:** PHT (UTC+8) - flexible overlap with US, UK, or AU
 
 ---
 
-## Repository Structure
+## 🐍 Python and VBA Projects Included
 
-```
-projects/    → working software: what I built
-workflow/    → guides and methodology: how I work
-```
+| Project | Description | Status |
+|:---|:---|:---|
+| ATM Data Parser | Extracts and processes unstructured transaction logs from encrypted archives | ✅ Completed |
+| Database Editor GUI | Tkinter interface for non-technical staff to manage SQLite databases | ✅ Completed |
+| Teller System Prototype | Cash management, savings/cheque processing, interest calculation | 🔧 Prototype |
+| Banking System Prototype | Core banking operations simulation for feasibility testing | ✅ Completed |
+| Barangay Budget System | Role-based financial management with approval workflows | 🔧 Prototype |
+| Savings Interest Calculator | Automates quarterly interest calculation for 7,000+ accounts | ✅ Completed |
 
-### `projects/`
+---
 
-**Key Projects** (as featured on my resume)
+## 🤖 AI & Automation Projects
 
-| Project | Description |
+| Project | Description | Status |
+|:---|:---|:---|
+| [CAS \u2014 n8n VoP Governance Workflow](./cas-n8n-vop-workflow) | Self-hosted n8n workflow validating a governance-aware AI decision process against fictional cooperative data (policy checks, requester/member lookup, escalation branching) | 🚧 In Progress (Phase 2 of 6) |
+
+---
+
+## 📊 VBA Projects — Available Upon Request
+
+The following VBA systems are currently in production use at Santa Ana Multi-Purpose Cooperative (SAMCO), handling 7,000+ member accounts daily.
+
+These files **cannot be shared publicly** because they contain confidential financial logic, member data structures, and proprietary business rules belonging to SAMCO.
+
+### VBA Systems Available for Review:
+
+| Project | Description | Status |
+|:---|:---|:---|
+| Loan Processing System | Automates amortization schedules, interest calculations, payment tracking, insurance integration, disclosures, and promissory notes | ✅ Live (Daily use since 2022) |
+| Legal Notice Batch Processor | One-click engine that generates demand letters (1st/2nd), account summaries, and mediation forms for collection events | ✅ Live |
+| Collateral Data Entry & Document Automation | Stores collateral data and automates legal document generation for loan applications | ✅ Live |
+
+### 📋 How to Request VBA Code Access
+
+I am happy to share **sanitized code samples** or discuss the architecture and logic of these systems with:
+
+- Recruiters verifying my technical skills
+- Hiring managers during interview processes
+- Fellow developers for learning or collaboration
+
+**To request access, please email me at:** `alvin_piquero@outlook.ph`
+
+**Include in your email:**
+- Your name and role/company
+- Which project(s) you are interested in
+- How you plan to use the code (e.g., "review for hiring decision," "learning purposes," "collaboration")
+
+**What I will send:**
+- Sanitized `.bas` files with confidential data removed
+- Or a detailed written explanation of the system architecture
+- Or a live screen recording demonstrating the system in action
+
+**What I cannot share:**
+- Files containing real member data
+- Files with SAMCO-specific business rules intact
+- Full production copies of the Excel workbooks
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technologies |
 |:---|:---|
-| ATM Data Extraction & Reporting Automation | Resolved a 3-year reporting backlog in a day; extracts transaction data from password-protected archives, cutting a multi-hour process to under 5 minutes |
-| Legal Notice & Mediation Batch Processing System | Python/PySide6 rebuild of a live VBA production tool that cut document generation from hours to under 1 minute — see project README for the reverse-engineering story |
-| Data Migration & Infrastructure Planning | Tooling used for a 7,000+ account core-system migration, improving field-mapping accuracy from ~70% to 99% |
-| Barangay Budget Management System | Role-based financial management with approval workflows and audit logging |
-| Savings Interest Extractor and Interest Calculator | Automates quarterly interest calculation across 7,000+ accounts |
-
-**Additional / Supplementary Projects**
-
-| Project | Description |
-|:---|:---|
-| Cooperative Banking System Prototype | Teller system covering cash management, savings, and interest |
-| Collateral Data Entry System with Print functions | Excel/VBA collateral data entry and document automation |
-
-Some projects ship as **code only** (no sample data) where the original production data
-couldn't be safely anonymized in time — see each project's README.
-
-### `workflow/`
-
-| Item | Description |
-|:---|:---|
-| Project Ledger | Two-part guide + tool for VAs handling batch password-protected archive extraction and report consolidation |
-| VoP (Variables of Prompting) | My personal framework for structured, disciplined AI-assisted development |
+| Programming | Python, VBA, PowerShell, CMD Scripting |
+| Data | SQLite, Pandas, ETL pipelines |
+| GUI | Tkinter |
+| Office | Excel (VBA macros, automation) |
 
 ---
 
-## About the VBA Production Systems
+## 📁 Repository Structure
 
-Two VBA systems I built ran in daily production at Santa Ana Multi-Purpose Cooperative
-(SAMCO) throughout my time there (Dec 2021 – Jun 2026), handling 7,000+ member accounts:
-
-- **Loan Processing System** — amortization, interest, insurance, payment tracking (live since 2022)
-- **Legal Notice & Mediation Batch Processor** — the original VBA source for the rebuild in `projects/`
-
-These original `.xlsm` files are **not included in this repository** — they contain
-confidential financial logic and business rules belonging to SAMCO. I'm happy to walk
-through the architecture, share sanitized code samples, or do a live screen recording for
-recruiters, hiring managers, or fellow developers. Email me to request access.
 
 ---
 
-## Certifications
+## 📧 Contact
 
-Google Cybersecurity Professional · Google IT Support Professional · Google AI Essentials
-— verified badges: credly.com/users/alvin-piquero
+For VBA code requests, questions about my experience, or job opportunities:
 
-## Tech Stack
-
-Python · VBA · SQLite · PySide6 · Tkinter · ETL pipelines · Excel automation · PowerShell
+- **Email:** alvin_piquero@outlook.ph
+- **LinkedIn:** https://www.linkedin.com/in/alvinpiquero481743254/
+- **GitHub:** (you are here)
 
 ---
 
-## License
+## 📝 License
 
-Shared for review and evaluation purposes. Code may not be copied or redistributed without
-permission. For collaboration or employment opportunities, reach out directly.
+This portfolio is shared for **review and evaluation purposes**. Code may not be copied or redistributed without permission.
+
+For collaboration or employment opportunities, please reach out directly.
+
+---
+
+*Last updated: August 2026*

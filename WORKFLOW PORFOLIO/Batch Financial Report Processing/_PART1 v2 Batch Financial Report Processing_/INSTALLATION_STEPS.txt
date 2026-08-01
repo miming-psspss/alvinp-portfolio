@@ -1,0 +1,98 @@
+======================================================
+ BATCH FINANCIAL REPORT PROCESSING FOR VAs
+ PART 1: EXTRACTION - INSTALLATION GUIDE
+ (For Windows computers - no tech background needed)
+======================================================
+
+You will create THREE files using Notepad, then run ONE of them
+to set everything up automatically. This only needs to be done
+ONCE per computer.
+
+You will need an internet connection for this setup.
+
+------------------------------------------------------
+STEP 1: Create a folder
+------------------------------------------------------
+1. On your Desktop, right-click an empty space.
+2. Choose "New" then "Folder".
+3. Name it: BatchFinancialReportProcessing
+4. Open this folder. You will save everything inside it.
+
+------------------------------------------------------
+STEP 2: Create install_setup.bat
+------------------------------------------------------
+1. Open Notepad (click Start, type "Notepad", press Enter).
+2. Copy the ENTIRE contents of the file named
+   "install_setup.bat" that was given to you, and paste it
+   into Notepad.
+3. Click File then Save As.
+4. In the "Save as type" dropdown, choose "All Files".
+5. In the file name box, type exactly:  install_setup.bat
+6. Save it inside the BatchFinancialReportProcessing folder from Step 1.
+7. Close Notepad.
+
+IMPORTANT: The file name must end in .bat, not .txt.
+If Windows shows the file with a gear icon, that means
+it saved correctly as a batch file.
+
+------------------------------------------------------
+STEP 3: Create run_extractor.bat
+------------------------------------------------------
+Repeat the same steps as above (open Notepad, paste, Save As,
+"All Files", exact file name), but this time:
+   - Paste the contents of "run_extractor.bat"
+   - Save it as:  run_extractor.bat
+   - Save it in the SAME BatchFinancialReportProcessing folder.
+
+------------------------------------------------------
+STEP 4: Create financial_report_extractor_part1.py
+------------------------------------------------------
+Repeat the same steps once more:
+   - Paste the contents of "financial_report_extractor_part1.py"
+   - Save it as:  financial_report_extractor_part1.py
+   - Save it in the SAME BatchFinancialReportProcessing folder.
+
+------------------------------------------------------
+STEP 5: Run the setup
+------------------------------------------------------
+1. Open the BatchFinancialReportProcessing folder.
+2. Double-click install_setup.bat
+3. A black window will open. This is normal.
+4. Press any key when it asks you to begin.
+5. Wait. It will download and install Python and 7-Zip
+   automatically. This can take a few minutes depending on
+   your internet speed. Do NOT close the window.
+6. When it says "Setup complete!", press any key to close it.
+
+------------------------------------------------------
+STEP 6: Close and reopen the folder
+------------------------------------------------------
+This step matters the first time only. Close the
+BatchFinancialReportProcessing folder window completely, then open it again.
+This makes sure your computer recognizes the new programs
+that were just installed.
+
+------------------------------------------------------
+STEP 7: Run the tool
+------------------------------------------------------
+1. Double-click run_extractor.bat
+2. A window titled "Batch Financial Report Processing for VAs, Part 1" should open.
+3. If it opens successfully, setup is done! You will not need
+   to repeat these steps again on this computer.
+
+------------------------------------------------------
+IF SOMETHING GOES WRONG
+------------------------------------------------------
+- If a security warning appears (blue "Windows protected your
+  PC" screen), click "More info" then "Run anyway". This
+  happens because the file was made outside the Windows Store,
+  it does not mean the file is unsafe.
+- If install_setup.bat closes immediately without showing
+  anything, right-click it and choose "Run as administrator".
+- If nothing works, take a screenshot of what you see and send
+  it to your supervisor along with a short description of what
+  step you were on.
+
+======================================================
+ END OF INSTALLATION GUIDE
+======================================================

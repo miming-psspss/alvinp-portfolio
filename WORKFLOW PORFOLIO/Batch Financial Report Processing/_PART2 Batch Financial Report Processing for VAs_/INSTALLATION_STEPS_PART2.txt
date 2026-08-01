@@ -1,0 +1,121 @@
+======================================================
+ BATCH FINANCIAL REPORT PROCESSING FOR VAs
+ PART 2: CONSOLIDATION - INSTALLATION GUIDE
+ (For Windows computers - no tech background needed)
+======================================================
+
+You will create THREE files using Notepad, then run ONE of them
+to set everything up automatically. This only needs to be done
+ONCE per computer.
+
+This is a separate, standalone setup from Part 1. You do not need
+Part 1 installed to use this tool, and installing this will not
+affect Part 1 if you already have it on the same computer.
+
+You will need an internet connection for this setup.
+
+------------------------------------------------------
+STEP 1: Create a folder
+------------------------------------------------------
+1. On your Desktop, right-click an empty space.
+2. Choose "New" then "Folder".
+3. Name it: BatchFinancialReportProcessing_Part2
+4. Open this folder. You will save everything inside it.
+
+------------------------------------------------------
+STEP 2: Create install_setup_part2.bat
+------------------------------------------------------
+1. Open Notepad (click Start, type "Notepad", press Enter).
+2. Copy the ENTIRE contents of the file named
+   "install_setup_part2.bat" that was given to you, and paste it
+   into Notepad.
+3. Click File then Save As.
+4. In the "Save as type" dropdown, choose "All Files".
+5. In the file name box, type exactly:  install_setup_part2.bat
+6. Save it inside the BatchFinancialReportProcessing_Part2 folder
+   from Step 1.
+7. Close Notepad.
+
+IMPORTANT: The file name must end in .bat, not .txt.
+If Windows shows the file with a gear icon, that means
+it saved correctly as a batch file.
+
+------------------------------------------------------
+STEP 3: Create run_consolidator.bat
+------------------------------------------------------
+Repeat the same steps as above (open Notepad, paste, Save As,
+"All Files", exact file name), but this time:
+   - Paste the contents of "run_consolidator.bat"
+   - Save it as:  run_consolidator.bat
+   - Save it in the SAME BatchFinancialReportProcessing_Part2 folder.
+
+------------------------------------------------------
+STEP 4: Create financial_report_consolidator_part2.py
+------------------------------------------------------
+Repeat the same steps once more:
+   - Paste the contents of "financial_report_consolidator_part2.py"
+   - Save it as:  financial_report_consolidator_part2.py
+   - Save it in the SAME BatchFinancialReportProcessing_Part2 folder.
+
+------------------------------------------------------
+STEP 5: Run the setup
+------------------------------------------------------
+1. Open the BatchFinancialReportProcessing_Part2 folder.
+2. Double-click install_setup_part2.bat
+3. A black window will open. This is normal.
+4. Press any key when it asks you to begin.
+5. Wait. It will download and install Python and the openpyxl
+   add-on automatically, if either is missing. This can take a
+   few minutes depending on your internet speed. Do NOT close
+   the window.
+6. When it says "Setup complete!", press any key to close it.
+
+------------------------------------------------------
+STEP 6: Close and reopen the folder
+------------------------------------------------------
+This step matters the first time only. Close the
+BatchFinancialReportProcessing_Part2 folder window completely,
+then open it again. This makes sure your computer recognizes
+anything that was just installed.
+
+------------------------------------------------------
+STEP 7: Run the tool
+------------------------------------------------------
+1. Double-click run_consolidator.bat
+2. A window titled "Batch Financial Report Processing for VAs,
+   Part 2: Consolidation" should open.
+3. If it opens successfully, setup is done! You will not need
+   to repeat these steps again on this computer.
+
+------------------------------------------------------
+STEP 8: Understand the Security Setting before you begin
+------------------------------------------------------
+This tool has a "Mask account and card numbers" checkbox, and it
+is turned ON by default. Leave it on unless your client has
+specifically told you they need full, unmasked numbers. When on,
+account and card numbers show only the last 4 digits everywhere:
+on screen, in searches, and in the exported Excel file. This
+protects real financial data from accidental exposure.
+
+If you're ever unsure whether to turn it off, don't. Ask your
+client or supervisor first.
+
+------------------------------------------------------
+IF SOMETHING GOES WRONG
+------------------------------------------------------
+- If a security warning appears (blue "Windows protected your
+  PC" screen), click "More info" then "Run anyway". This
+  happens because the file was made outside the Windows Store,
+  it does not mean the file is unsafe.
+- If install_setup_part2.bat closes immediately without showing
+  anything, right-click it and choose "Run as administrator".
+- If the tool says openpyxl is missing even after setup, close
+  the window, open a new one, and run install_setup_part2.bat
+  again.
+- If nothing works, take a screenshot of what you see and send
+  it to your supervisor along with a short description of what
+  step you were on.
+
+======================================================
+ END OF INSTALLATION GUIDE
+======================================================
