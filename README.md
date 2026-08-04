@@ -1,4 +1,4 @@
-# Alvin Piquero, IT Automation & Systems Specialist
+# Alvin Piquero, IT Automation, Systems, Business Specialist
 
 Python and VBA automation projects built for real-world use in a financial cooperative
 serving 7,000+ members, plus a growing set of independent projects extending that work
