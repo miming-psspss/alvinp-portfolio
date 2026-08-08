@@ -17,7 +17,7 @@ improving data migration accuracy from roughly 70% to 99% at scale.
 ## Repository Structure
 
 ```
-resume/              → resume and CV (PDF)
+resume/               → resume and CV (PDF)
 projects/             → working software: what I built
 vop/                  → Variables of Prompting (VoP), my framework for disciplined AI-assisted dev
 cas-planning-docs/    → planning docs for the Cooperative AI System (CAS) concept
@@ -32,9 +32,9 @@ cas-n8n-vop-workflow/ → active n8n build implementing CAS, governed by VoP (in
 |---|---|
 | [ATM Data Extraction & Reporting Automation](./projects/atm-data-extraction-reporting) | Resolved a 3-year reporting backlog in a day; extracts transaction data from password-protected archives, cutting a multi-hour process to under 5 minutes. Later generalized into the client-agnostic [Batch Financial Report Processing](./projects/batch-financial-report-processing) product |
 | [Legal Notice & Mediation Batch Processing System](./projects/legal-notice-mediation-batch-processing-system) | Python/PySide6 rebuild of a live VBA production tool, all 11 real document types wired up, cut document generation from hours to under 1 minute. See the project README for the reverse-engineering story and `ORIGINAL_VBA_CONTEXT.md` for the source system it replaced |
-| Loan Processing & Automation System | Amortization, interest, insurance, and payment tracking for 7,000+ loan accounts, live in daily production since 2022 (original workbook confidential; see [project note](./projects/loan-processing-automation-system)) |
-| Savings Interest Extractor & Interest Calculator | Automates quarterly interest calculation across 7,000+ savings and share-capital accounts, Python/Pandas/OpenPyXL (see [project note](./projects/savings-interest-extractor-calculator)) |
-| Collateral Data Entry System with Print Functions | VBA/Excel tool for structured collateral data entry with automated print formatting (see [project note](./projects/collateral-data-entry-system)) |
+| [Loan Processing & Automation System](./projects/loan-processing-automation-system) | Amortization, interest, insurance, and payment tracking for 7,000+ loan accounts, live in daily production since 2022 (original workbook confidential; see project README) |
+| [Savings Interest Extractor & Interest Calculator](./projects/savings-interest-extractor-calculator) | Automates quarterly interest calculation across 7,000+ savings and share-capital accounts, Python/Pandas/OpenPyXL |
+| [Collateral Data Entry System with Print Functions](./projects/collateral-data-entry-system) | VBA/Excel tool for structured collateral data entry with automated print formatting |
 | [Data Migration & Infrastructure Planning](./projects/data-migration-infrastructure-planning) | Tooling used for a 7,000+ account core-system migration, improving field-mapping accuracy from ~70% to 99% |
 
 **Independent / portfolio projects**
@@ -51,32 +51,35 @@ each has a short note explaining what it does and why the source isn't included.
 happy to walk through the architecture, share sanitized code samples, or do a live screen
 recording for recruiters or hiring managers. Email me to request access.
 
-### `vop/`, Variables of Prompting
+### `vop/`, `cas-planning-docs/` + `cas-n8n-vop-workflow/` — Variables of Prompting & the Cooperative AI System
 
-My personal framework for structured, disciplined AI-assisted development, built from
-real prompt-drift failures and progressively formalized. Includes the formal spec, a
-risk/responsible-use document, and a working template.
+These three folders form one hierarchy, in order:
 
-### `cas-planning-docs/` + `cas-n8n-vop-workflow/`, Cooperative AI System (CAS)
-
-CAS is a governance-first AI concept for cooperative environments: a workflow that checks
-requests against defined policy before responding, instead of an unconstrained model
-making judgment calls on its own. `cas-planning-docs/` holds the design docs (overview,
-core architecture, business case & risk, validation & rollout, build log).
-[`cas-n8n-vop-workflow/`](./cas-n8n-vop-workflow) is the active implementation, a
-self-hosted n8n + PostgreSQL build. Phases 0 through 6 are complete — all six workflows
-(query intake/scope check, RAG retrieval, auditor mode check, hybrid inference +
-confidence check, and logging) built and validated end to end against a fictional
-dataset, with two small known limitations still open (see that README). The README there
-tracks exact build status per stage, a full canvas screenshot, and instructions to run it
-locally.
+1. **[`vop/`](./vop) — Variables of Prompting (VoP).** My personal framework for
+   structured, disciplined AI-assisted development, built from real prompt-drift failures
+   and progressively formalized. Includes the formal spec, a risk/responsible-use
+   document, and a working template. VoP is the governance discipline everything below
+   is built on.
+2. **[`cas-planning-docs/`](./cas-planning-docs) — Cooperative AI System (CAS), the
+   concept.** CAS is a governance-first AI concept for cooperative environments: a
+   workflow that checks requests against defined policy before responding, instead of an
+   unconstrained model making judgment calls on its own, with VoP as its governing
+   discipline. Holds the design docs (overview, core architecture, business case & risk,
+   validation & rollout, build log).
+3. **[`cas-n8n-vop-workflow/`](./cas-n8n-vop-workflow) — the mini-test.** A scoped,
+   self-hosted n8n + PostgreSQL build validating one slice of CAS end to end, against a
+   fictional dataset (not real member data, not a production deployment). Phases 0
+   through 6 are complete — all six workflows (query intake/scope check, RAG retrieval,
+   auditor mode check, hybrid inference + confidence check, and logging) built and
+   validated, with two small known limitations still open. The README there tracks exact
+   build status per stage, a full canvas screenshot, and instructions to run it locally.
 
 ---
 
 ## Certifications
 
 Google Cybersecurity Professional · Google IT Support Professional · Google AI Essentials,
-verified badges: credly.com/users/alvin-piquero
+verified badges: [credly.com/users/alvin-piquero](https://www.credly.com/users/alvin-piquero)
 
 ## Tech Stack
 
