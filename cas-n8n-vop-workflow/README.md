@@ -66,7 +66,9 @@ deployed in production anywhere.
   free-text reason. Deliberate for now, not yet reconsidered.
 - **Treasurer/Chairperson BOD-ceiling paths untested** — see Phase 4 note above.
 
-See the full canvas in [`screenshots/full-workflow-canvas-phases-2-6.png`](./screenshots/full-workflow-canvas-phases-2-6.png).
+![Full workflow canvas, Phases 2-6](./screenshots/full-workflow-canvas-phases-2-6.png)
+
+Full-resolution version: [`screenshots/full-workflow-canvas-phases-2-6.png`](./screenshots/full-workflow-canvas-phases-2-6.png).
 
 **Note on this repo's workflow export:** the full pipeline — 32 nodes covering Query
 Intake through Auditor Mode Check, Hybrid Inference, and Logging (i.e. all of Workflows

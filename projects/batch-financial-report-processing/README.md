@@ -11,6 +11,15 @@ extraction/reporting logic is the same; what changed is everything around it, pa
 plain-language install guides, `.bat` setup scripts, and removal of any SAMCO-specific
 paths or assumptions, so it can be handed to a VA on any client's data.
 
+## Screenshots
+
+Part 2 (consolidation) first-run setup, showing the dependency check before it runs:
+
+![Part 2 first-run setup check](<./_PART2 Batch Financial Report Processing for VAs_/screenshot/Screenshot 2026-08-09 023308.png>)
+
+*(Part 1's screenshots are recorded from a VM screen-capture and need to be re-taken as
+clean stills before they're worth embedding here — noted so it's not silently missing.)*
+
 ## Structure
 
 - **`_PART1 v2 Batch Financial Report Processing_/`** — extraction stage. Pulls report

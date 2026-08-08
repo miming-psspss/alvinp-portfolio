@@ -10,6 +10,11 @@ generalized, and re-engineered into a product-ready, client-agnostic package for
 the same core extraction/reporting logic and packages it with install scripts, setup docs,
 and guide PDFs for someone outside SAMCO to run without any of the original context.
 
+## Screenshots
+
+![Configuration screen](./images/ATM.png)
+![Processing screen](./images/ATM1.png)
+
 ## What's here
 
 **`ExtractionGUIupdated`** — batch RAR extraction tool

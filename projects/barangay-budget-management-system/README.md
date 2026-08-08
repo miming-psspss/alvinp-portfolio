@@ -5,6 +5,11 @@ operations: transaction recording, a maker-checker approval workflow, cash balan
 tracking, budget allocation by category, and role-based access control. Built with
 Python/Tkinter and a local SQLite database — no server or internet connection required.
 
+## Screenshots
+
+![Login screen](./images/BarangaySystem.png)
+![Admin dashboard](./images/BarangaySystem1.png)
+
 ## Features
 
 - **Role-based access** — three access levels (`viewer`, `treasurer`, `admin`), enforced

@@ -6,6 +6,18 @@ Account, Mediation Forms 2-9, Envelope). Some fields (conference scheduling,
 mediation outcomes) are still blank placeholders pending the actual process
 workflow -- see the field maps for what's mapped vs. still open.
 
+## Screenshots
+
+Case list and document generator, running against the synthetic dataset:
+
+![Case list and document generator](<./screenshot/Pasted image.png>)
+
+The original production workbook's DATABASE sheet, shown redacted — this is the standard
+this project's screenshots are held to before anything with real member data goes in a
+screenshot:
+
+![Original workbook DATABASE sheet, redacted](<./screenshot/Screenshot 2026-08-02 062428.png>)
+
 ## Setup
 ```
 pip install -r requirements.txt
