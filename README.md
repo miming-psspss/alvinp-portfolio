@@ -64,10 +64,12 @@ requests against defined policy before responding, instead of an unconstrained m
 making judgment calls on its own. `cas-planning-docs/` holds the design docs (overview,
 core architecture, business case & risk, validation & rollout, build log).
 [`cas-n8n-vop-workflow/`](./cas-n8n-vop-workflow) is the active implementation, a
-self-hosted n8n + PostgreSQL build, with Phases 0 through 4 complete (Phase 5, Hybrid
-Inference + Confidence Check, in progress), tested against
-a fictional dataset. The README there tracks exact build status per stage and includes
-instructions to run it locally.
+self-hosted n8n + PostgreSQL build. Phases 0 through 6 are complete — all six workflows
+(query intake/scope check, RAG retrieval, auditor mode check, hybrid inference +
+confidence check, and logging) built and validated end to end against a fictional
+dataset, with two small known limitations still open (see that README). The README there
+tracks exact build status per stage, a full canvas screenshot, and instructions to run it
+locally.
 
 ---
 
