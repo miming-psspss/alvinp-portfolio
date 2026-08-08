@@ -1,20 +1,130 @@
-# Alvin Piquero, IT Automation, Systems, Business Specialist
+# Alvin Piquero — IT Automation, Systems & Business Specialist
 
 Python and VBA automation projects built for real-world use in a financial cooperative
-serving 7,000+ members, plus a growing set of independent projects extending that work
-into new tools and platforms. Built end-to-end, covering requirements, design, deployment,
-and support, turning multi-hour manual processes into workflows that run in minutes, and
-improving data migration accuracy from roughly 70% to 99% at scale.
+serving 7,000+ members, plus independent projects extending into workflow automation,
+AI governance, and productized tools. I build end-to-end: requirements, design,
+deployment, support, and the environments that make all of it work.
+
+I turn multi-hour manual processes into workflows that run in minutes, and have
+improved data migration accuracy from roughly 70% to 99% at scale.
 
 - **Location:** Candijay, Bohol, Philippines
 - **Email:** alvin_piquero@outlook.ph
-- **LinkedIn:** https://www.linkedin.com/in/alvinpiquero481743254/
+- **LinkedIn:** [linkedin.com/in/alvinpiquero481743254](https://www.linkedin.com/in/alvinpiquero481743254/)
 - **Resume / CV:** see [`resume/`](./resume)
 - **Timezone:** PHT (UTC+8), flexible overlap with US, UK, or AU
 
 ---
 
+## My Engineering Philosophy
+
+I build for **reliability**—not just functionality. Every tool, framework, and
+environment I create serves one purpose: **reducing failure points and increasing
+confidence.**
+
+This philosophy comes from years of real-world debugging:
+
+1. I've fixed hardware issues (a GPU that wouldn't boot taught me to start with the
+   simplest fix—a BIOS reset—before tearing anything apart).
+2. I've fixed environment issues (Android Studio's build loops taught me to debug the
+   toolchain, not just the code).
+3. I've fixed production issues (SAMCO's 7,000-member systems taught me to build for
+   stability under real pressure).
+4. I've fixed AI-generated issues (VoP was born from prompt-drift failures that kept
+   creating new errors instead of solving them).
+
+Each failure taught me something. Each fix made me better. And each lesson is now
+built into:
+
+- **My hardware:** A reliable PC with dual monitors for real-time output checking,
+  plus dual-boot capability for cross-environment testing.
+- **My frameworks:** VoP for disciplined, governance-first AI-assisted development.
+- **My systems:** Production tools that have run for years without major failures.
+- **My portfolio:** Honest documentation of what works—and what I've learned.
+
+**I don't just solve problems. I build systems that prevent them.**
+
+---
+
+## Troubleshooting & Debugging Philosophy
+
+Every system in this portfolio is built on a foundation of deep technical
+troubleshooting. I don't just write code—I diagnose, isolate, and resolve problems
+at every layer of the stack.
+
+**What this means in practice:**
+
+- **System-level diagnostics:** I troubleshoot hardware, OS, network, and application
+  issues. When something breaks, I find the root cause—not just the symptom.
+
+- **Verifying AI-generated code:** AI is powerful, but it hallucinates. I test,
+  validate, and fix AI output before it reaches production. I don't trust code
+  blindly—I verify it against edge cases and real data.
+
+- **Production incident response:** At SAMCO, I maintained systems running daily for
+  7,000+ members. When issues arose (corrupted archives, Excel crashes, data
+  mismatches), I diagnosed and resolved them under pressure, often with no external
+  support.
+
+- **Systematic isolation:** I use binary-search debugging, log analysis, and
+  hypothesis-driven testing to narrow down problems—whether it's a VBA macro,
+  a Python script, or an n8n workflow.
+
+- **Preventive thinking:** I don't just fix bugs—I ask *"What else could break?"*
+  and build safeguards. This is why SAMCO's loan processing has run smoothly since 2022.
+
+**Real-world example — Hardware:**
+When I installed a new GPU, the system failed to boot. I nearly did a full motherboard
+teardown. Instead, I stopped, traced back my recent changes, and checked the
+motherboard's voltage readings. I realized the new PSU wasn't delivering enough
+power *as detected by the motherboard*—even though it should have been sufficient
+on paper. The fix wasn't hardware replacement—it was a simple BIOS reset that
+recalibrated the power detection.
+
+**Lesson:** Always start with the simplest hypothesis. Check recent changes first.
+Gather data before taking things apart. Diagnose before you disassemble.
+
+**Real-world example — Development environment:**
+While building an Android app login page, I hit a wall—errors kept cycling, no fix
+worked, and AI-generated solutions just branched out into new errors. I restarted
+my PC, even considered switching operating systems. The real issue? It wasn't the
+code—it was the environment. Android Studio's build system had a bug that no amount
+of code changes could fix. Once I stopped debugging the *code* and started debugging
+the *environment* (clearing caches, checking SDK versions, fixing Gradle), the build
+worked.
+
+**Lesson:** Know the difference between a code bug and an environment bug. Code bugs
+are local. Environment bugs affect everything. Don't let AI (or yourself) keep
+generating code when the real problem is the toolchain.
+
+**Debugging is not a fallback—it's my first principle.** It's what allows me to work
+independently, trust my tools, and deliver reliable systems.
+
+---
+
+## Work Environment & Tools
+
+I don't just write code—I build the environment to write code effectively.
+
+**Hardware:**
+- Custom-built PC optimized for development work
+- Dual-monitor setup for simultaneous code/output verification and log monitoring
+- Multi-boot capability (Windows/Linux) to test across operating systems
+- Reliability-focused component selection (I've learned the hard way what fails)
+
+**Why this matters:**
+- I can test across environments before deployment
+- I can monitor outputs and logs in real-time without context-switching
+- I'm not slowed down by hardware failures or underpowered systems
+- I can reproduce issues in isolated OS environments
+
+**This investment in my tools reflects my philosophy:** A reliable engineer needs a
+reliable workspace. I built mine to match the standards I apply to my code.
+
+---
+
 ## Repository Structure
+
 
 ```
 resume/               → resume and CV (PDF)
