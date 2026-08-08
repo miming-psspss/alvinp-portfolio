@@ -8,8 +8,17 @@ deployment, support, and the environments that make all of it work.
 I turn multi-hour manual processes into workflows that run in minutes, and have
 improved data migration accuracy from roughly 70% to 99% at scale.
 
+### Selected Impact
+
+- **7,000+ members** supported by production financial systems
+- **~70% → ~99%** improvement in data-migration field-mapping accuracy
+- **3-year reporting backlog → resolved in 1 day**
+- **Multi-hour reporting process → under 5 minutes**
+- **Document generation → under 1 minute**
+- Production loan-processing system in daily use since **2022**
+
 - **Location:** Candijay, Bohol, Philippines
-- **Email:** alvin_piquero@outlook.ph
+- **Email:** [alvin_piquero@outlook.ph](mailto:alvin_piquero@outlook.ph)
 - **LinkedIn:** [linkedin.com/in/alvinpiquero481743254](https://www.linkedin.com/in/alvinpiquero481743254/)
 - **Resume / CV:** see [`resume/`](./resume)
 - **Timezone:** PHT (UTC+8), flexible overlap with US, UK, or AU
@@ -36,8 +45,8 @@ This philosophy comes from years of real-world debugging:
 Each failure taught me something. Each fix made me better. And each lesson is now
 built into:
 
-- **My hardware:** A reliable PC with dual monitors for real-time output checking,
-  plus dual-boot capability for cross-environment testing.
+- **My development environment:** A controlled workspace with dual monitors and
+  Windows/Linux environments for testing, monitoring, and troubleshooting.
 - **My frameworks:** VoP for disciplined, governance-first AI-assisted development.
 - **My systems:** Production tools that have run for years without major failures.
 - **My portfolio:** Honest documentation of what works—and what I've learned.
@@ -71,30 +80,33 @@ at every layer of the stack.
   a Python script, or an n8n workflow.
 
 - **Preventive thinking:** I don't just fix bugs—I ask *"What else could break?"*
-  and build safeguards. This is why SAMCO's loan processing has run smoothly since 2022.
+  and build safeguards. This approach has supported SAMCO's loan-processing workflow
+  in daily operational use since 2022.
 
-**Real-world example — Hardware:**
+### Real-world example — Hardware
+
 When I installed a new GPU, the system failed to boot. I nearly did a full motherboard
 teardown. Instead, I stopped, traced back my recent changes, and checked the
-motherboard's voltage readings. I realized the new PSU wasn't delivering enough
-power *as detected by the motherboard*—even though it should have been sufficient
-on paper. The fix wasn't hardware replacement—it was a simple BIOS reset that
-recalibrated the power detection.
+motherboard's voltage readings.
+
+I realized the new PSU wasn't delivering enough power *as detected by the motherboard*—
+even though it should have been sufficient on paper. The fix wasn't hardware
+replacement—it was a simple BIOS reset that recalibrated the power detection.
 
 **Lesson:** Always start with the simplest hypothesis. Check recent changes first.
 Gather data before taking things apart. Diagnose before you disassemble.
 
-**Real-world example — Development environment:**
-While building an Android app login page, I hit a wall—errors kept cycling, no fix
-worked, and AI-generated solutions just branched out into new errors. I restarted
-my PC, even considered switching operating systems. The real issue? It wasn't the
-code—it was the environment. Android Studio's build system had a bug that no amount
-of code changes could fix. Once I stopped debugging the *code* and started debugging
-the *environment* (clearing caches, checking SDK versions, fixing Gradle), the build
-worked.
+### Real-world example — Development Environment
+
+While building an Android app login page, repeated AI-generated fixes were producing
+increasingly complex errors. I eventually isolated the problem to the development
+environment rather than the application code.
+
+After checking caches, SDK versions, and Gradle configuration, the build environment
+was corrected without continuing to modify the application itself.
 
 **Lesson:** Know the difference between a code bug and an environment bug. Code bugs
-are local. Environment bugs affect everything. Don't let AI (or yourself) keep
+are local. Environment bugs affect everything. Don't let AI—or yourself—keep
 generating code when the real problem is the toolchain.
 
 **Debugging is not a fallback—it's my first principle.** It's what allows me to work
@@ -102,24 +114,19 @@ independently, trust my tools, and deliver reliable systems.
 
 ---
 
-## Work Environment & Tools
+## Development Environment
 
-I don't just write code—I build the environment to write code effectively.
+I maintain controlled Windows/Linux environments for testing, troubleshooting,
+and reproducible development.
 
-**Hardware:**
-- Custom-built PC optimized for development work
-- Dual-monitor setup for simultaneous code/output verification and log monitoring
-- Multi-boot capability (Windows/Linux) to test across operating systems
-- Reliability-focused component selection (I've learned the hard way what fails)
+- Custom-built development workstation
+- Dual-monitor setup for code, output, and log monitoring
+- Windows/Linux environments for cross-platform testing
+- Isolated test environments where appropriate
+- Local development infrastructure for validating workflows before deployment
 
-**Why this matters:**
-- I can test across environments before deployment
-- I can monitor outputs and logs in real-time without context-switching
-- I'm not slowed down by hardware failures or underpowered systems
-- I can reproduce issues in isolated OS environments
-
-**This investment in my tools reflects my philosophy:** A reliable engineer needs a
-reliable workspace. I built mine to match the standards I apply to my code.
+The goal is simple: **the development environment should support the same reliability
+principles expected from the software itself.**
 
 ---
 
