@@ -39,69 +39,7 @@ improved data migration accuracy from roughly 70% to 99% at scale.
 
 ---
 
-## My Engineering Philosophy
-
-I build for **reliability**, not just functionality. Every tool and environment I create
-is designed to reduce failure points and increase confidence.
-
-This philosophy comes from years of troubleshooting:
-
-1. **Hardware:** Learning to diagnose before replacing or disassembling components.
-2. **Development environments:** Learning to distinguish toolchain problems from code problems.
-3. **Production systems:** Supporting financial systems serving 7,000+ members.
-4. **AI-assisted development:** VoP grew from dealing with prompt drift and AI-generated errors.
-
-Each failure became a lesson that now influences how I design and test systems.
-
-**I don't just solve problems. I build systems that prevent them.**
-
----
-
-## Troubleshooting & Debugging Philosophy
-
-I don't just write code. I diagnose, isolate, and resolve problems across the stack.
-
-- **System diagnostics:** Hardware, OS, network, application, and environment issues.
-- **AI verification:** I test and validate AI-generated code against real data and edge cases.
-- **Production support:** Troubleshooting corrupted archives, Excel failures, data mismatches,
-  and workflow issues in financial operations.
-- **Systematic isolation:** Logs, controlled tests, binary-search debugging, and
-  hypothesis-driven testing.
-- **Preventive thinking:** I look beyond the immediate fix and build safeguards against
-  recurring failures.
-
-### Real-world examples
-
-**Development environment:**  
-While building an Android application, repeated AI-generated fixes were creating new
-errors. I isolated the problem to the development environment and resolved the
-SDK, cache, and Gradle configuration instead of continuing to modify the application.
-
-**Hardware:**  
-After a GPU installation caused a boot failure, I traced the recent changes and
-system readings before disassembling the machine. A BIOS reset resolved the issue.
-
-**Lesson:** Diagnose first. Gather evidence, isolate the failure, then apply the fix.
-
-**Debugging is not a fallback. It's my first principle.**
-
----
-
-## Development Environment
-
-I maintain controlled Windows/Linux environments for testing, troubleshooting,
-and reproducible development.
-
-- Custom-built development workstation
-- Dual-monitor setup for code, output, and logs
-- Windows/Linux environments for cross-platform testing
-- Isolated test environments when required
-- Local infrastructure for workflow validation
-
-**A reliable development environment supports reliable software.**
-
 ## Repository Structure
-
 
 ```
 resume/               → resume and CV (PDF)
@@ -160,6 +98,51 @@ These three folders form one hierarchy, in order:
    auditor mode check, hybrid inference + confidence check, and logging) built and
    validated, with two small known limitations still open. The README there tracks exact
    build status per stage, a full canvas screenshot, and instructions to run it locally.
+
+---
+
+## My Engineering Philosophy
+
+I build for **reliability**, not just functionality. Every tool and environment I create
+is designed to reduce failure points and increase confidence.
+
+This philosophy comes from years of troubleshooting:
+
+1. **Hardware:** Learning to diagnose before replacing or disassembling components.
+2. **Development environments:** Learning to distinguish toolchain problems from code problems.
+3. **Production systems:** Supporting financial systems serving 7,000+ members.
+4. **AI-assisted development:** VoP grew from dealing with prompt drift and AI-generated errors.
+
+Each failure became a lesson that now influences how I design and test systems.
+
+**I don't just solve problems. I build systems that prevent them.**
+
+---
+
+## Troubleshooting & Debugging Philosophy
+
+I don't just write code. I diagnose, isolate, and resolve problems across the stack —
+hardware, OS, network, application, and environment issues; testing and validating
+AI-generated code against real data and edge cases; troubleshooting corrupted archives,
+Excel failures, data mismatches, and workflow issues in live financial operations. My
+approach is systematic isolation (logs, controlled tests, binary-search debugging,
+hypothesis-driven testing) followed by preventive thinking — building safeguards against
+recurring failures, not just fixing the immediate one. I maintain controlled Windows/Linux
+environments to support this, so toolchain problems can be isolated from code problems
+during testing.
+
+### Real-world examples
+
+**Development environment:**
+While building a personal Android side project, repeated AI-generated fixes were creating
+new errors. I isolated the problem to the development environment and resolved the
+SDK, cache, and Gradle configuration instead of continuing to modify the application.
+
+**Hardware:**
+After a GPU installation caused a boot failure, I traced the recent changes and
+system readings before disassembling the machine. A BIOS reset resolved the issue.
+
+**Lesson:** Diagnose first. Gather evidence, isolate the failure, then apply the fix.
 
 ---
 
