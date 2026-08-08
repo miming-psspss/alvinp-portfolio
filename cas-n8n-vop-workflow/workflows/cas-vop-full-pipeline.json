@@ -1,0 +1,1745 @@
+{
+  "name": "CAS - VoP Full Pipeline (Workflows 2-6)",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        0
+      ],
+      "id": "e63575ff-ace9-44da-97a6-cc88c58d59b2",
+      "name": "When clicking \u2018Execute workflow\u2019"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "members",
+          "mode": "list",
+          "cachedResultName": "members"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "member_id",
+              "value": "={{ $('Edit Fields').item.json.member_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        880,
+        0
+      ],
+      "id": "c56ac2b6-37f9-4c02-a07a-d3d8380008c4",
+      "name": "Lookup Member",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "Ite6t8TLcDxpNaJG",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "25153bb3-8ae6-487a-bd57-accbcda767dc",
+              "name": "query",
+              "value": "what is member id of Dela Cruz, Ana",
+              "type": "string"
+            },
+            {
+              "id": "5133e768-2fd2-4090-8186-043038113eb4",
+              "name": "requester_id",
+              "value": "S-001",
+              "type": "string"
+            },
+            {
+              "id": "ef1cce16-886a-448f-80e9-fc108d27b97e",
+              "name": "requester_role",
+              "value": "staff",
+              "type": "string"
+            },
+            {
+              "id": "18911a45-88c3-41cb-ad6e-b5ca2f94a73a",
+              "name": "member_id",
+              "value": "M-001",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        0
+      ],
+      "id": "0a471cbf-054f-4b5e-af3c-2c1705e76d12",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7ff04fd7-586f-4fde-a260-54394c31ac80",
+              "name": "requester_role",
+              "value": "={{ $('Edit Fields').item.json.requester_role }}",
+              "type": "string"
+            },
+            {
+              "id": "a683c764-1937-4cb3-b5d7-02ea103230c2",
+              "name": "requester_access_level",
+              "value": "={{ $('Lookup Requester (Staff)').isExecuted ? $('Lookup Requester (Staff)').item.json.access_level : $('Lookup Requester (BOD)').isExecuted ? $('Lookup Requester (BOD)').item.json.access_level : 'N/A - member (self-service only)' }}",
+              "type": "string"
+            },
+            {
+              "id": "86857bb1-1552-4592-99d1-0cf3f4da4ba9",
+              "name": "requester_scope_allowed",
+              "value": "={{ $('Lookup Requester (Staff)').isExecuted ? $('Lookup Requester (Staff)').item.json.query_scope_allowed : $('Lookup Requester (BOD)').isExecuted ? $('Lookup Requester (BOD)').item.json.query_scope_allowed : 'Own account only' }}",
+              "type": "string"
+            },
+            {
+              "id": "adf2b42d-4779-413e-becf-077fcfef3fb1",
+              "name": "member_account_status",
+              "value": "={{ $json.account_status }}",
+              "type": "string"
+            },
+            {
+              "id": "8d04c07a-9032-4e12-b779-046c89f152eb",
+              "name": "member_loan_status",
+              "value": "={{ $json.loan_status }}",
+              "type": "string"
+            },
+            {
+              "id": "aca78826-19d7-40ba-933c-7be5a3708aa1",
+              "name": "member_tenure_months",
+              "value": "={{ $json.tenure_months }}",
+              "type": "string"
+            },
+            {
+              "id": "a46d4e73-93fa-4306-b694-996045b8c177",
+              "name": "query",
+              "value": "={{ $('Edit Fields').item.json.query }}",
+              "type": "string"
+            },
+            {
+              "id": "0ef61bab-a2a3-4cf3-9a84-5b30176dfab7",
+              "name": "requester_id",
+              "value": "={{ $('Edit Fields').item.json.requester_id }}",
+              "type": "string"
+            },
+            {
+              "id": "b37d8f90-4ba2-46fb-a61c-6f5b625a8780",
+              "name": "member_id",
+              "value": "={{ $('Edit Fields').item.json.member_id }}",
+              "type": "string"
+            },
+            {
+              "id": "61b0b558-51e2-402c-a734-ba96d94574fc",
+              "name": "requester_title",
+              "value": "={{ $('Lookup Requester (BOD)').isExecuted ? $('Lookup Requester (BOD)').item.json.role_title : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "b740c951-e5c6-4417-8c8a-7adae5f78281",
+              "name": "member_found",
+              "value": "={{ $('Lookup Member').all().length > 0 && $('Lookup Member').item.json.member_id != null }}",
+              "type": "boolean"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1056,
+        0
+      ],
+      "id": "1e8de2ad-ad4f-4584-9665-81aea35f8d60",
+      "name": "Combine Requester + Member"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "members",
+          "mode": "list",
+          "cachedResultName": "members"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "member_id",
+              "value": "={{ $json.requester_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        512,
+        -192
+      ],
+      "id": "7faae6c1-65d1-4645-a722-54faec5bc50a",
+      "name": "Lookup Requester (Member)",
+      "credentials": {
+        "postgres": {
+          "id": "Ite6t8TLcDxpNaJG",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": "staff"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "staff_id",
+              "value": "={{ $json.requester_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        512,
+        -16
+      ],
+      "id": "b0d923ee-d508-4640-9186-118fa11cc35f",
+      "name": "Lookup Requester (Staff)",
+      "credentials": {
+        "postgres": {
+          "id": "Ite6t8TLcDxpNaJG",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        704,
+        0
+      ],
+      "id": "11402428-3992-47ce-8f8c-40bbc4064c0a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "305216a5-5f5f-4e55-8e2c-a33157cd4df0",
+              "name": "decision",
+              "value": "hard_blocked",
+              "type": "string"
+            },
+            {
+              "id": "57819c91-c086-46ed-8307-dbd9cccd6c24",
+              "name": "reason",
+              "value": "P-02: Account is delinquent (30+ days past due). Query refused.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1648,
+        -512
+      ],
+      "id": "a65f11d2-f4c9-4411-9078-5f62328dc232",
+      "name": "Decision - Delinquency Block"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7194da48-75df-461f-af04-20fe0eaa2b72",
+              "name": "decision",
+              "value": "escalated_bod",
+              "type": "string"
+            },
+            {
+              "id": "017702a6-3306-4355-b662-2a0878058c4b",
+              "name": "reason",
+              "value": "P-05: Loan restructuring request requires BOD-level approval, not frontline handling.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1648,
+        -288
+      ],
+      "id": "8cd269b9-a9c8-40f0-9477-191e329be8f2",
+      "name": "Decision - Escalate to BOD"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0befb1ec-6b78-402d-bc48-c10da5a97c17",
+              "name": "decision",
+              "value": "hard_blocked",
+              "type": "string"
+            },
+            {
+              "id": "9bb1c1ce-4841-48d0-9a9f-02df58200364",
+              "name": "reason",
+              "value": "P-04: Requester attempted to access another member's financial detail without documented cause.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1648,
+        -48
+      ],
+      "id": "3172dcd6-e789-4b46-86d0-1e96ad4c7090",
+      "name": "Decision - Cross-Member Block"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bef93df9-7cf6-4e52-9dee-8b6228ad110c",
+              "name": "decision",
+              "value": "restricted_tenure",
+              "type": "string"
+            },
+            {
+              "id": "5788e3fd-6e89-4773-8cee-b367795bf628",
+              "name": "reason",
+              "value": "P-03: Member has under 3 months tenure. Not eligible for loan products.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1648,
+        160
+      ],
+      "id": "e0505f1a-6473-4fd8-8572-9095dbce2f48",
+      "name": "Decision - Tenure Restriction"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c5a56c82-37b7-40bf-a590-0c0970a0ca85",
+              "name": "decision",
+              "value": "restricted_loan_eligibility",
+              "type": "string"
+            },
+            {
+              "id": "ea247dbc-b37c-4c9e-8d9b-d01bf0f09534",
+              "name": "reason",
+              "value": "P-01: Member has 3-5 months tenure. Does not yet meet the 6-month minimum for loan eligibility.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1648,
+        368
+      ],
+      "id": "cf2c2a1f-ef85-49a2-9032-95124e56003b",
+      "name": "Decision - Loan Eligibility Restriction"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c5058e73-1de9-4801-8019-74e016efd93c",
+              "name": "decision",
+              "value": "proceed",
+              "type": "string"
+            },
+            {
+              "id": "1e40b8b6-7f4e-417c-9672-5084c494991a",
+              "name": "reason",
+              "value": "No policy violation detected at scope-check level. Cleared to proceed to Workflow 3 (retrieval).",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1632,
+        592
+      ],
+      "id": "05ce61eb-b546-444f-aea2-12cedbb922a3",
+      "name": "Decision - Proceed"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const query = $json.query.toLowerCase();\n\nconst policyKeywords = {\n  'P-01': ['loan', 'eligib'],\n  'P-02': ['delinquen', 'past due'],\n  'P-03': ['tenure', 'new member', 'how long'],\n  'P-04': ['another member', 'cross-member', \"someone else\"],\n  'P-05': ['restructur']\n};\n\nlet matches = [];\nfor (const [policyId, keywords] of Object.entries(policyKeywords)) {\n  if (keywords.some(kw => query.includes(kw))) {\n    matches.push(policyId);\n  }\n}\n\nreturn {\n  json: {\n    ...$json,\n    matched_policy_ids: matches,\n    policy_match_found: matches.length > 0\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1808,
+        592
+      ],
+      "id": "6194740f-c4b8-400c-bc30-e8ea74a78e18",
+      "name": "Match Query to Policy"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "8b0fe814-e4d3-459f-b077-389b88056296",
+              "leftValue": "={{ $json.policy_match_found }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1984,
+        592
+      ],
+      "id": "ceb6450c-19a6-4d97-9d84-b45512114f8b",
+      "name": "Policy Found?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8c97ea17-5bd4-43a3-a90b-031118c6f964",
+              "name": "decision",
+              "value": "escalated_compliance",
+              "type": "string"
+            },
+            {
+              "id": "3113bb71-c5be-4a9d-8a65-9ce135b6a4e7",
+              "name": "reason",
+              "value": "P-06: No policy match found for this query. Escalating for manual review.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2176,
+        448
+      ],
+      "id": "2ebde77a-2fb7-4d6a-a39c-9dcd0695e4a5",
+      "name": "Decision - Escalate Unclear Policy"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM policies_index WHERE policy_id = ANY(ARRAY[{{ $json.matched_policy_ids.map(id => `'${id}'`).join(',') }}])",
+        "options": {
+          "queryReplacement": "={{ [...$json.matched_policy_ids] }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2176,
+        720
+      ],
+      "id": "e9029f84-c7b6-4145-b031-53cbbea294bd",
+      "name": "Retrieve Relevant Policy",
+      "credentials": {
+        "postgres": {
+          "id": "Ite6t8TLcDxpNaJG",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d61b33b1-431c-4cda-bc61-18c06cdc71f1",
+              "name": "=query",
+              "value": "={{ $('Policy Found?').item.json.query }}",
+              "type": "string"
+            },
+            {
+              "id": "212878b7-6555-4a37-81fc-f7b874cf7da2",
+              "name": "=requester_id",
+              "value": "={{ $('Policy Found?').item.json.requester_id }}",
+              "type": "string"
+            },
+            {
+              "id": "99676990-f95a-4e83-9e86-7232df99da57",
+              "name": "=requester_role",
+              "value": "={{ $('Policy Found?').item.json.requester_role }}",
+              "type": "string"
+            },
+            {
+              "id": "4cf11b12-e6f9-473b-91ab-c742a6cec6b9",
+              "name": "=member_id",
+              "value": "={{ $('Policy Found?').item.json.member_id }}",
+              "type": "string"
+            },
+            {
+              "id": "71504751-2efd-427b-96bd-be2b2429f0fc",
+              "name": "=decision",
+              "value": "={{ $('Policy Found?').item.json.decision }}",
+              "type": "string"
+            },
+            {
+              "id": "a8c21397-8101-4447-8f4d-85eae8a0a97c",
+              "name": "=reason",
+              "value": "={{ $('Policy Found?').item.json.reason }}",
+              "type": "string"
+            },
+            {
+              "id": "ba16a5ec-f316-428e-99e1-e444c029914b",
+              "name": "=policy_id",
+              "value": "={{ $json.policy_id }}",
+              "type": "string"
+            },
+            {
+              "id": "a5faf753-66bf-40fa-8fb0-faf0bd8bbe6b",
+              "name": "=policy_name",
+              "value": "={{ $json.policy_name }}",
+              "type": "string"
+            },
+            {
+              "id": "d4ef9421-3eac-4f78-8427-c2c19babc32e",
+              "name": "=policy_summary",
+              "value": "={{ $json.summary }}",
+              "type": "string"
+            },
+            {
+              "id": "8a3e8ffe-ee8e-4c97-9d11-06d1f9b69739",
+              "name": "=enforcement_type",
+              "value": "={{ $json.enforcement_type }}",
+              "type": "string"
+            },
+            {
+              "id": "e7e95aea-2e81-4df1-800a-7b97a56b369f",
+              "name": "matched_policy_count",
+              "value": "={{ $('Match Query to Policy').item.json.matched_policy_ids.length }}",
+              "type": "number"
+            },
+            {
+              "id": "d10ba458-2d4b-456b-9f06-f07106f6ec95",
+              "name": "member_found",
+              "value": "={{ $('Policy Found?').item.json.member_found }}",
+              "type": "boolean"
+            },
+            {
+              "id": "e8c28f54-49cb-4ff6-825b-9ac23181f699",
+              "name": "member_account_status",
+              "value": "={{ $('Policy Found?').item.json.member_account_status }}",
+              "type": "string"
+            },
+            {
+              "id": "fc1a5d74-fa15-4c32-a7f6-87ebbb875c02",
+              "name": "member_loan_status",
+              "value": "={{ $('Policy Found?').item.json.member_loan_status }}",
+              "type": "string"
+            },
+            {
+              "id": "a2b6538d-4f3c-4e21-b424-e8b7d4cb7902",
+              "name": "member_tenure_months",
+              "value": "={{ $('Policy Found?').item.json.member_tenure_months }}",
+              "type": "string"
+            },
+            {
+              "id": "3e92f3e5-60eb-459f-8ac0-bd99635c17d8",
+              "name": "savings_balance",
+              "value": "={{ $('Policy Found?').item.json.savings_balance }}",
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2400,
+        720
+      ],
+      "id": "7595729f-309c-4e70-a8e8-30e591b4f026",
+      "name": "Combine Query Context + Policy"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const query = $json.query.toLowerCase();\n\nconst individualIndicators = ['balance', 'loan status', 'account status', 'my account', 'this account', 'this member'];\nconst aggregateIndicators = ['how many', 'overall', 'average', 'total members', 'aggregate', 'policy on', 'what is the policy'];\n\nconst hasIndividual = individualIndicators.some(kw => query.includes(kw));\nconst hasAggregate = aggregateIndicators.some(kw => query.includes(kw));\n\nlet sensitivity_level;\nif (hasIndividual && !hasAggregate) {\n  sensitivity_level = 'individual_detail';\n} else if (hasAggregate && !hasIndividual) {\n  sensitivity_level = 'aggregate_or_policy';\n} else if (hasIndividual && hasAggregate) {\n  sensitivity_level = 'individual_detail'; // ambiguous case defaults to the stricter classification\n} else {\n  sensitivity_level = 'aggregate_or_policy'; // no indicator hit defaults to the looser classification\n}\n\nreturn {\n  json: {\n    ...$json,\n    sensitivity_level\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2608,
+        720
+      ],
+      "id": "1d93e838-90f3-4e75-84d4-e5280c202ed2",
+      "name": "Classify Query Sensitivity"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const role = $json.requester_role;\nconst accessLevel = $json.requester_access_level; // Frontline / Senior / BOD title, from Combine Requester + Member\nconst sensitivity = $json.sensitivity_level;\n\nlet ceiling_ok = true;\nlet ceiling_reason = '';\n\nif (role === 'member') {\n  // Members querying their own account never trip P-08 \u2014 that's P-04's territory, already enforced in Workflow 2\n  ceiling_ok = true;\n} else if (role === 'staff') {\n  if (accessLevel === 'Frontline' && sensitivity === 'individual_detail') {\n    ceiling_ok = true; // Frontline can see their own assigned members' individual detail\n    ceiling_reason = 'Frontline access to assigned member individual detail permitted';\n  } else if (accessLevel === 'Senior' && sensitivity === 'aggregate_or_policy') {\n    ceiling_ok = true;\n    ceiling_reason = 'Senior staff access to aggregate/policy data permitted';\n  } else {\n    ceiling_ok = true; // default permissive until specific BOD-title ceilings below are added\n  }\n} else if (role === 'bod') {\n  if (sensitivity === 'individual_detail') {\n    ceiling_ok = false;\n    ceiling_reason = 'P-08: BOD role should not receive individual member financial detail unless explicitly escalated';\n  } else {\n    ceiling_ok = true;\n  }\n}\n\nreturn {\n  json: {\n    ...$json,\n    ceiling_ok,\n    ceiling_reason\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2816,
+        720
+      ],
+      "id": "6acc79a1-12fa-46d9-a2a6-1c895850631e",
+      "name": "Role Ceiling Check"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.requester_role }}",
+                    "rightValue": "member",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "3060f113-2376-4018-a9c2-ce11820b5425"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "member"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "7581e0d0-4012-47de-8ef8-6ec90204cff6",
+                    "leftValue": "={{ $json.requester_role }}",
+                    "rightValue": "staff",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "staff"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "f0b513e6-1d89-405e-b38a-f9a6a6771651",
+                    "leftValue": "={{ $json.requester_role }}",
+                    "rightValue": "bod",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "bod"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        -16
+      ],
+      "id": "f95dd79f-d9f6-43e0-be93-4fd767b4dea5",
+      "name": "If (Member/Staff/BOD LookUp?)"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "board_of_directors",
+          "mode": "list",
+          "cachedResultName": "board_of_directors"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "bod_id",
+              "value": "={{ $json.requester_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        512,
+        160
+      ],
+      "id": "a5e5d62c-3fa3-4107-b32a-b1f1f13fced1",
+      "name": "Lookup Requester (BOD)",
+      "credentials": {
+        "postgres": {
+          "id": "Ite6t8TLcDxpNaJG",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "35529cfc-b623-48ea-bda4-0ab44ff592da",
+              "leftValue": "={{ $json.ceiling_ok }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2976,
+        720
+      ],
+      "id": "d4b188e9-230e-474e-8962-b8434fb65db8",
+      "name": "Ceiling OK?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c98affd4-b963-4023-afb8-7e5b969f3cec",
+              "name": "=decision",
+              "value": "restricted_role_boundary",
+              "type": "string"
+            },
+            {
+              "id": "0cafee62-4e5d-4f26-91f6-bd86b40a92e1",
+              "name": "reason",
+              "value": "={{ $json.ceiling_reason }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3184,
+        816
+      ],
+      "id": "0277634e-ea3f-410d-9ea9-c0036ef59a48",
+      "name": "Decision - Restricted Role Boundary"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:11434/api/generate",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"llama3.2\",\n  \"prompt\": \"A cooperative member asked: {{ $json.query }}\\n\\nRelevant policy: {{ $json.policy_summary }}\\n\\nMember details:\\n- Account status: {{ $json.member_account_status }}\\n- Loan status: {{ $json.member_loan_status }}\\n- Tenure (months): {{ $json.member_tenure_months }}\\n- Savings balance: {{ $json.savings_balance }}\\n\\nFirst, explicitly state the member's tenure in months and the policy's minimum tenure requirement in months. Then state numerically whether the member's tenure is greater than, equal to, or less than the minimum. Then state whether the delinquency condition is met. Only after both comparisons are stated explicitly, give your final eligibility conclusion.\",\n  \"stream\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        3184,
+        624
+      ],
+      "id": "de5d28cc-5b70-44dc-aeeb-f4ef21c6203a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a5a55c6b-8173-4b5b-9fd4-bbd63e93c612",
+              "name": "decision",
+              "value": "escalated_compliance",
+              "type": "string"
+            },
+            {
+              "id": "7beab764-891c-4c1f-908b-7e722f201f7f",
+              "name": "reason",
+              "value": "={{ $json.matched_policy_count !== 1 ? 'Ambiguous or missing policy match (matched_policy_count: ' + $json.matched_policy_count + ')' : 'Member record not found' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3824,
+        704
+      ],
+      "id": "e341fea3-794e-4711-b1c5-59955d307d34",
+      "name": "Decision - Escalate Confidence"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6ee10a6e-7c90-4dad-a1ac-a155ac02f648",
+              "name": "decision",
+              "value": "delivered",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3824,
+        544
+      ],
+      "id": "daeee8c1-ac8a-47cc-b99b-7a2c1f415877",
+      "name": "Decision - Delivered"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "1f51b5ba-e9a4-4b7d-a322-6b14f48986bd",
+              "leftValue": "={{ $json.confident }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3600,
+        624
+      ],
+      "id": "6f6144f2-de17-4755-b151-351a591984db",
+      "name": "Confident?"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const matchedCount = $('Ceiling OK?').item.json.matched_policy_count;\nconst memberFound = $('Ceiling OK?').item.json.member_found;\nconst draftAnswer = $json.response;\nconst confident = (matchedCount === 1 && memberFound === true);\n\nreturn {\n  json: {\n    ...$('Ceiling OK?').item.json,\n    draft_answer: draftAnswer,\n    confident: confident\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3392,
+        624
+      ],
+      "id": "88c1f0ff-62a3-4e3a-86ec-0df476378134",
+      "name": "Confidence Check"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.member_loan_status }}",
+                    "rightValue": "past due",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "51213b28-f26a-43a8-b461-5271c9457cc2"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "hard_blocked"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "7d46a3cf-9599-4411-a081-85c7f957cf6e",
+                    "leftValue": "={{ $json.query.toLowerCase() }}",
+                    "rightValue": "restructur",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "escalated_bod"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "3ec15e89-d3fa-489d-a4d1-5c826f575d95",
+                    "leftValue": "={{ $json.requester_role === 'member' && $json.requester_id !== $json.member_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "hard_blocked"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "0a239ad1-8b91-48b5-a576-6eeb0b71be2d",
+                    "leftValue": "={{ $json.member_tenure_months != null && Number($json.member_tenure_months) < 3 }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "restricted_tenure"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "f5d69b5d-1029-4254-b921-257c3c66bd46",
+                    "leftValue": "={{ Number($json.member_tenure_months) >= 3 && Number($json.member_tenure_months) < 6 }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "restricted_loan_eligibility"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1216,
+        -64
+      ],
+      "id": "3aea57b9-79dd-47bf-bc02-cc92c6db481e",
+      "name": "Requester Role Switch"
+    },
+    {
+      "parameters": {
+        "numberInputs": 8
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        4128,
+        -240
+      ],
+      "id": "4948fd6d-8553-4cdd-b73f-16622b82bcc0",
+      "name": "Merge - All Decision Outcomes"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "query_log",
+          "mode": "list",
+          "cachedResultName": "query_log"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "confident": "={{ $json.confident }}",
+            "query": "={{ $json.query }}",
+            "requester_id": "={{ $json.requester_id }}",
+            "requester_role": "={{ $json.requester_role }}",
+            "member_id": "={{ $json.member_id }}",
+            "policy_id": "={{ $json.policy_id }}",
+            "decision": "={{ $json.decision }}",
+            "reason": "={{ $json.reason }}",
+            "draft_answer": "={{ $json.draft_answer }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "logged_at",
+              "displayName": "logged_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "requester_id",
+              "displayName": "requester_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "requester_role",
+              "displayName": "requester_role",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "member_id",
+              "displayName": "member_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "policy_id",
+              "displayName": "policy_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "decision",
+              "displayName": "decision",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "reason",
+              "displayName": "reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "confident",
+              "displayName": "confident",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "draft_answer",
+              "displayName": "draft_answer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        4336,
+        -240
+      ],
+      "id": "63675cdf-a9b3-48d5-a725-f5b812b459cb",
+      "name": "Log to query_log",
+      "credentials": {
+        "postgres": {
+          "id": "Ite6t8TLcDxpNaJG",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking \u2018Execute workflow\u2019": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lookup Member": {
+      "main": [
+        [
+          {
+            "node": "Combine Requester + Member",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If (Member/Staff/BOD LookUp?)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Requester + Member": {
+      "main": [
+        [
+          {
+            "node": "Requester Role Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lookup Requester (Member)": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lookup Requester (Staff)": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Lookup Member",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decision - Proceed": {
+      "main": [
+        [
+          {
+            "node": "Match Query to Policy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Match Query to Policy": {
+      "main": [
+        [
+          {
+            "node": "Policy Found?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Policy Found?": {
+      "main": [
+        [
+          {
+            "node": "Retrieve Relevant Policy",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Decision - Escalate Unclear Policy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retrieve Relevant Policy": {
+      "main": [
+        [
+          {
+            "node": "Combine Query Context + Policy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Query Context + Policy": {
+      "main": [
+        [
+          {
+            "node": "Classify Query Sensitivity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify Query Sensitivity": {
+      "main": [
+        [
+          {
+            "node": "Role Ceiling Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If (Member/Staff/BOD LookUp?)": {
+      "main": [
+        [
+          {
+            "node": "Lookup Requester (Member)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Lookup Requester (Staff)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Lookup Requester (BOD)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lookup Requester (BOD)": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Role Ceiling Check": {
+      "main": [
+        [
+          {
+            "node": "Ceiling OK?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ceiling OK?": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Decision - Restricted Role Boundary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Confidence Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Confident?": {
+      "main": [
+        [
+          {
+            "node": "Decision - Delivered",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Decision - Escalate Confidence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Confidence Check": {
+      "main": [
+        [
+          {
+            "node": "Confident?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decision - Delivered": {
+      "main": [
+        [
+          {
+            "node": "Merge - All Decision Outcomes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decision - Escalate Confidence": {
+      "main": [
+        [
+          {
+            "node": "Merge - All Decision Outcomes",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Decision - Delinquency Block": {
+      "main": [
+        [
+          {
+            "node": "Merge - All Decision Outcomes",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Decision - Escalate to BOD": {
+      "main": [
+        [
+          {
+            "node": "Merge - All Decision Outcomes",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Decision - Cross-Member Block": {
+      "main": [
+        [
+          {
+            "node": "Merge - All Decision Outcomes",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Decision - Tenure Restriction": {
+      "main": [
+        [
+          {
+            "node": "Merge - All Decision Outcomes",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "Decision - Loan Eligibility Restriction": {
+      "main": [
+        [
+          {
+            "node": "Merge - All Decision Outcomes",
+            "type": "main",
+            "index": 6
+          }
+        ]
+      ]
+    },
+    "Decision - Escalate Unclear Policy": {
+      "main": [
+        [
+          {
+            "node": "Merge - All Decision Outcomes",
+            "type": "main",
+            "index": 7
+          }
+        ]
+      ]
+    },
+    "Requester Role Switch": {
+      "main": [
+        [
+          {
+            "node": "Decision - Delinquency Block",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Decision - Escalate to BOD",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Decision - Cross-Member Block",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Decision - Tenure Restriction",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Decision - Loan Eligibility Restriction",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Decision - Proceed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge - All Decision Outcomes": {
+      "main": [
+        [
+          {
+            "node": "Log to query_log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "ff29df0a-c5b7-4b53-b98a-d4e451f9b5c6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "78a3842cc26b33b456928afaa961fae19ed6874d5258a9ad24d28bb9bcd82b9b"
+  },
+  "nodeGroups": [],
+  "id": "wVrhbgiGaVbD0WEF",
+  "tags": []
+}
