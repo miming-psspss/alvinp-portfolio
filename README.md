@@ -1,9 +1,11 @@
-# Alvin Piquero — IT Automation, Systems & Business Specialist
+# Alvin Piquero | IT Automation, Systems & Business Specialist
 
 Python and VBA automation projects built for real-world use in a financial cooperative
-serving 7,000+ members, plus independent projects extending into workflow automation,
-AI governance, and productized tools. I build end-to-end: requirements, design,
-deployment, support, and the environments that make all of it work.
+serving 7,000+ members, plus independent work in workflow automation, AI governance,
+and productized tools.
+
+I build end-to-end solutions from requirements and design through deployment, support,
+and troubleshooting.
 
 I turn multi-hour manual processes into workflows that run in minutes, and have
 improved data migration accuracy from roughly 70% to 99% at scale.
@@ -11,45 +13,33 @@ improved data migration accuracy from roughly 70% to 99% at scale.
 ### Selected Impact
 
 - **7,000+ members** supported by production financial systems
-- **~70% → ~99%** improvement in data-migration field-mapping accuracy
+- **~70% → ~99%** data-migration field-mapping accuracy
 - **3-year reporting backlog → resolved in 1 day**
-- **Multi-hour reporting process → under 5 minutes**
+- **Multi-hour reporting → under 5 minutes**
 - **Document generation → under 1 minute**
-- Production loan-processing system in daily use since **2022**
+- Loan-processing system in daily use since **2022**
 
 - **Location:** Candijay, Bohol, Philippines
-- **Email:** [alvin_piquero@outlook.ph](mailto:alvin_piquero@outlook.ph)
-- **LinkedIn:** [linkedin.com/in/alvinpiquero481743254](https://www.linkedin.com/in/alvinpiquero481743254/)
-- **Resume / CV:** see [`resume/`](./resume)
+- **Email:** [alvin_piquero@outlook.ph](mailto\:alvin_piquero@outlook.ph)
+- **LinkedIn:** [linkedin.com/in/alvinpiquero481743254](https://linkedin.com/in/alvinpiquero481743254/)
+- **Resume / CV:** [`resume/`](./resume)
 - **Timezone:** PHT (UTC+8), flexible overlap with US, UK, or AU
 
 ---
 
 ## My Engineering Philosophy
 
-I build for **reliability** not just functionality. Every tool, framework, and
-environment I create serves one purpose: **reducing failure points and increasing
-confidence.**
+I build for **reliability**, not just functionality. Every tool and environment I create
+is designed to reduce failure points and increase confidence.
 
-This philosophy comes from years of real-world debugging:
+This philosophy comes from years of troubleshooting:
 
-1. I've fixed hardware issues (a GPU that wouldn't boot taught me to start with the
-   simplest fixa BIOS resetbefore tearing anything apart).
-2. I've fixed environment issues (Android Studio's build loops taught me to debug the
-   toolchain, not just the code).
-3. I've fixed production issues (SAMCO's 7,000-member systems taught me to build for
-   stability under real pressure).
-4. I've fixed AI-generated issues (VoP was born from prompt-drift failures that kept
-   creating new errors instead of solving them).
+1. **Hardware:** Learning to diagnose before replacing or disassembling components.
+2. **Development environments:** Learning to distinguish toolchain problems from code problems.
+3. **Production systems:** Supporting financial systems serving 7,000+ members.
+4. **AI-assisted development:** VoP grew from dealing with prompt drift and AI-generated errors.
 
-Each failure taught me something. Each fix made me better. And each lesson is now
-built into:
-
-- **My development environment:** A controlled workspace with dual monitors and
-  Windows/Linux environments for testing, monitoring, and troubleshooting.
-- **My frameworks:** VoP for disciplined, governance-first AI-assisted development.
-- **My systems:** Production tools that have run for years without major failures.
-- **My portfolio:** Honest documentation of what worksand what I've learned.
+Each failure became a lesson that now influences how I design and test systems.
 
 **I don't just solve problems. I build systems that prevent them.**
 
@@ -57,60 +47,31 @@ built into:
 
 ## Troubleshooting & Debugging Philosophy
 
-Every system in this portfolio is built on a foundation of deep technical
-troubleshooting. I don't just write codeI diagnose, isolate, and resolve problems
-at every layer of the stack.
+I don't just write code. I diagnose, isolate, and resolve problems across the stack.
 
-**What this means in practice:**
+- **System diagnostics:** Hardware, OS, network, application, and environment issues.
+- **AI verification:** I test and validate AI-generated code against real data and edge cases.
+- **Production support:** Troubleshooting corrupted archives, Excel failures, data mismatches,
+  and workflow issues in financial operations.
+- **Systematic isolation:** Logs, controlled tests, binary-search debugging, and
+  hypothesis-driven testing.
+- **Preventive thinking:** I look beyond the immediate fix and build safeguards against
+  recurring failures.
 
-- **System-level diagnostics:** I troubleshoot hardware, OS, network, and application
-  issues. When something breaks, I find the root causenot just the symptom.
+### Real-world examples
 
-- **Verifying AI-generated code:** AI is powerful, but it hallucinates. I test,
-  validate, and fix AI output before it reaches production. I don't trust code
-  blindlyI verify it against edge cases and real data.
+**Development environment:**  
+While building an Android application, repeated AI-generated fixes were creating new
+errors. I isolated the problem to the development environment and resolved the
+SDK, cache, and Gradle configuration instead of continuing to modify the application.
 
-- **Production incident response:** At SAMCO, I maintained systems running daily for
-  7,000+ members. When issues arose (corrupted archives, Excel crashes, data
-  mismatches), I diagnosed and resolved them under pressure, often with no external
-  support.
+**Hardware:**  
+After a GPU installation caused a boot failure, I traced the recent changes and
+system readings before disassembling the machine. A BIOS reset resolved the issue.
 
-- **Systematic isolation:** I use binary-search debugging, log analysis, and
-  hypothesis-driven testing to narrow down problemswhether it's a VBA macro,
-  a Python script, or an n8n workflow.
+**Lesson:** Diagnose first. Gather evidence, isolate the failure, then apply the fix.
 
-- **Preventive thinking:** I don't just fix bugsI ask *"What else could break?"*
-  and build safeguards. This approach has supported SAMCO's loan-processing workflow
-  in daily operational use since 2022.
-
-### Real-world example  Hardware
-
-When I installed a new GPU, the system failed to boot. I nearly did a full motherboard
-teardown. Instead, I stopped, traced back my recent changes, and checked the
-motherboard's voltage readings.
-
-I realized the new PSU wasn't delivering enough power *as detected by the motherboard*
-even though it should have been sufficient on paper. The fix wasn't hardware
-replacementit was a simple BIOS reset that recalibrated the power detection.
-
-**Lesson:** Always start with the simplest hypothesis. Check recent changes first.
-Gather data before taking things apart. Diagnose before you disassemble.
-
-### Real-world example  Development Environment
-
-While building an Android app login page, repeated AI-generated fixes were producing
-increasingly complex errors. I eventually isolated the problem to the development
-environment rather than the application code.
-
-After checking caches, SDK versions, and Gradle configuration, the build environment
-was corrected without continuing to modify the application itself.
-
-**Lesson:** Know the difference between a code bug and an environment bug. Code bugs
-are local. Environment bugs affect everything. Don't let AIor yourselfkeep
-generating code when the real problem is the toolchain.
-
-**Debugging is not a fallbackit's my first principle.** It's what allows me to work
-independently, trust my tools, and deliver reliable systems.
+**Debugging is not a fallback. It's my first principle.**
 
 ---
 
@@ -120,147 +81,12 @@ I maintain controlled Windows/Linux environments for testing, troubleshooting,
 and reproducible development.
 
 - Custom-built development workstation
-- Dual-monitor setup for code, output, and log monitoring
+- Dual-monitor setup for code, output, and logs
 - Windows/Linux environments for cross-platform testing
-- Isolated test environments where appropriate
-- Local development infrastructure for validating workflows before deployment
+- Isolated test environments when required
+- Local infrastructure for workflow validation
 
-The goal is simple: **the development environment should support the same reliability
-principles expected from the software itself.**
-
----
-
-## Repository Structure# Alvin Piquero  IT Automation, Systems & Business Specialist
-
-Python and VBA automation projects built for real-world use in a financial cooperative
-serving 7,000+ members, plus independent projects extending into workflow automation,
-AI governance, and productized tools. I build end-to-end: requirements, design,
-deployment, support, and the environments that make all of it work.
-
-I turn multi-hour manual processes into workflows that run in minutes, and have
-improved data migration accuracy from roughly 70% to 99% at scale.
-
-### Selected Impact
-
-- **7,000+ members** supported by production financial systems
-- **~70% → ~99%** improvement in data-migration field-mapping accuracy
-- **3-year reporting backlog → resolved in 1 day**
-- **Multi-hour reporting process → under 5 minutes**
-- **Document generation → under 1 minute**
-- Production loan-processing system in daily use since **2022**
-
-- **Location:** Candijay, Bohol, Philippines
-- **Email:** [alvin_piquero@outlook.ph](mailto:alvin_piquero@outlook.ph)
-- **LinkedIn:** [linkedin.com/in/alvinpiquero481743254](https://www.linkedin.com/in/alvinpiquero481743254/)
-- **Resume / CV:** see [`resume/`](./resume)
-- **Timezone:** PHT (UTC+8), flexible overlap with US, UK, or AU
-
----
-
-## My Engineering Philosophy
-
-I build for **reliability**not just functionality. Every tool, framework, and
-environment I create serves one purpose: **reducing failure points and increasing
-confidence.**
-
-This philosophy comes from years of real-world debugging:
-
-1. I've fixed hardware issues (a GPU that wouldn't boot taught me to start with the
-   simplest fixa BIOS resetbefore tearing anything apart).
-2. I've fixed environment issues (Android Studio's build loops taught me to debug the
-   toolchain, not just the code).
-3. I've fixed production issues (SAMCO's 7,000-member systems taught me to build for
-   stability under real pressure).
-4. I've fixed AI-generated issues (VoP was born from prompt-drift failures that kept
-   creating new errors instead of solving them).
-
-Each failure taught me something. Each fix made me better. And each lesson is now
-built into:
-
-- **My development environment:** A controlled workspace with dual monitors and
-  Windows/Linux environments for testing, monitoring, and troubleshooting.
-- **My frameworks:** VoP for disciplined, governance-first AI-assisted development.
-- **My systems:** Production tools that have run for years without major failures.
-- **My portfolio:** Honest documentation of what worksand what I've learned.
-
-**I don't just solve problems. I build systems that prevent them.**
-
----
-
-## Troubleshooting & Debugging Philosophy
-
-Every system in this portfolio is built on a foundation of deep technical
-troubleshooting. I don't just write codeI diagnose, isolate, and resolve problems
-at every layer of the stack.
-
-**What this means in practice:**
-
-- **System-level diagnostics:** I troubleshoot hardware, OS, network, and application
-  issues. When something breaks, I find the root causenot just the symptom.
-
-- **Verifying AI-generated code:** AI is powerful, but it hallucinates. I test,
-  validate, and fix AI output before it reaches production. I don't trust code
-  blindlyI verify it against edge cases and real data.
-
-- **Production incident response:** At SAMCO, I maintained systems running daily for
-  7,000+ members. When issues arose (corrupted archives, Excel crashes, data
-  mismatches), I diagnosed and resolved them under pressure, often with no external
-  support.
-
-- **Systematic isolation:** I use binary-search debugging, log analysis, and
-  hypothesis-driven testing to narrow down problemswhether it's a VBA macro,
-  a Python script, or an n8n workflow.
-
-- **Preventive thinking:** I don't just fix bugsI ask *"What else could break?"*
-  and build safeguards. This approach has supported SAMCO's loan-processing workflow
-  in daily operational use since 2022.
-
-### Real-world example  Hardware
-
-When I installed a new GPU, the system failed to boot. I nearly did a full motherboard
-teardown. Instead, I stopped, traced back my recent changes, and checked the
-motherboard's voltage readings.
-
-I realized the new PSU wasn't delivering enough power *as detected by the motherboard*
-even though it should have been sufficient on paper. The fix wasn't hardware
-replacementit was a simple BIOS reset that recalibrated the power detection.
-
-**Lesson:** Always start with the simplest hypothesis. Check recent changes first.
-Gather data before taking things apart. Diagnose before you disassemble.
-
-### Real-world example  Development Environment
-
-While building an Android app login page, repeated AI-generated fixes were producing
-increasingly complex errors. I eventually isolated the problem to the development
-environment rather than the application code.
-
-After checking caches, SDK versions, and Gradle configuration, the build environment
-was corrected without continuing to modify the application itself.
-
-**Lesson:** Know the difference between a code bug and an environment bug. Code bugs
-are local. Environment bugs affect everything. Don't let AIor yourselfkeep
-generating code when the real problem is the toolchain.
-
-**Debugging is not a fallback it's my first principle.** It's what allows me to work
-independently, trust my tools, and deliver reliable systems.
-
----
-
-## Development Environment
-
-I maintain controlled Windows/Linux environments for testing, troubleshooting,
-and reproducible development.
-
-- Custom-built development workstation
-- Dual-monitor setup for code, output, and log monitoring
-- Windows/Linux environments for cross-platform testing
-- Isolated test environments where appropriate
-- Local development infrastructure for validating workflows before deployment
-
-The goal is simple: **the development environment should support the same reliability
-principles expected from the software itself.**
-
----
+**A reliable development environment supports reliable software.**
 
 ## Repository Structure
 
