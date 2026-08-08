@@ -11,5 +11,17 @@ roughly 70% to 99%.
   pass, so failures surface as a clear checklist instead of a stack trace mid-migration.
 - `PROGRESS REPORT.docx` — write-up of the migration effort and accuracy improvement.
 
+## Screenshots
+
+The SAMCO Loan Entry System used during migration — document image on the left for
+reference against the entry form on the right, empty state:
+
+![Loan entry system, empty state](<./screenshots/Screenshot 2026-08-09 041523.png>)
+
+Loaded against real migration data — 7,259 client records pulled in, source document
+image manually redacted before capture to remove borrower information:
+
+![Loan entry system, 7,259 records loaded, source image redacted](<./screenshots/Screenshot 2026-08-09 041719.png>)
+
 The full migration pipeline and source ledgers are not included here, as they contain
 confidential member and financial data.
