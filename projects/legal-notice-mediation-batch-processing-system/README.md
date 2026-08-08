@@ -18,11 +18,17 @@ screenshot:
 
 ![Original workbook DATABASE sheet, redacted](<./screenshot/Screenshot 2026-08-02 062428.png>)
 
+Original VBA source, showing the VBE editor over the DATABASE sheet — the member name
+in the formula bar is redacted:
+
+![Original VBA source, formula bar redacted](<./screenshot/FormedationLegalProcess.png>)
+
 ## Setup
 ```
 pip install -r requirements.txt
 python main.py
 ```
+
 
 Once the app is open, click **"Import Cases from Excel..."** at the top and select any
 Excel file with your case data. A mapping screen will open where you:
