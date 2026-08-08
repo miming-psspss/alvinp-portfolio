@@ -19,6 +19,18 @@ improved data migration accuracy from roughly 70% to 99% at scale.
 - **Document generation → under 1 minute**
 - Loan-processing system in daily use since **2022**
 
+### Featured Projects
+
+  **1. ATM Reporting Automation**
+    3-year backlog → 1 day
+  **2. Loan Processing System**
+    7,000+ accounts | production since 2022
+  **3. Data Migration System**
+    ~70% → ~99% field mapping accuracy
+  **4. CAS + VoP**
+    Governance-aware AI workflow architecture
+
+
 - **Location:** Candijay, Bohol, Philippines
 - **Email:** [alvin_piquero@outlook.ph](mailto\:alvin_piquero@outlook.ph)
 - **LinkedIn:** [linkedin.com/in/alvinpiquero481743254](https://linkedin.com/in/alvinpiquero481743254/)
