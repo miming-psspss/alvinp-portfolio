@@ -96,9 +96,20 @@ cp .env.example .env   # then fill in your own values
 docker compose up -d
 ```
 
+On first start, `init/01-create-cas-test-db.sh` runs automatically (via Postgres's
+standard `/docker-entrypoint-initdb.d` mechanism) and creates a second database,
+`cas_test`, loading `cas-schema.sql` into it — separate from n8n's own internal
+database (`$N8N_DB`). This only runs on a fresh `./data/postgres` volume; if you've
+already started the stack once, remove that volume first if you need it re-applied.
+
 Once running, import `workflows/cas-vop-full-pipeline.json` into your n8n instance via
 the n8n UI (Workflows → Import from File) to inspect the full logic end to end.
-`cas-schema.sql` documents the Postgres schema for the fictional test dataset.
+
+**Note on seed data:** `cas-schema.sql` is a schema-only dump (table structure, no
+rows) — it gives you the `cas_test` tables the workflow queries against, but not the
+10 fictional members / 4 staff / 3 board members / 8 policies used during actual
+testing. To exercise the workflow end to end you'll need to insert your own test rows
+matching the schema, or ask me for the seed data directly.
 
 Note: the credential reference embedded in the workflow JSON points to a local
 Postgres connection by name only (no password or connection string is included) —

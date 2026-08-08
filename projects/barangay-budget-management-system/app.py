@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from widgets import LoginWindow, Dashboard, TransactionWindow, ReportWindow, AdminWindow, CashWindow
-from database_fixed import DatabaseManager
+from database import DatabaseManager
 from auth import AuthSystem
 from transaction_manager import TransactionManager
 from reporting import ReportGenerator

@@ -62,9 +62,3 @@ a single admin account, not real barangay financial data. The **Audit Log** scre
 (`widgets/audit_log_window.py`) currently displays illustrative placeholder entries
 rather than live logging; the separate **User Reports** screen is the one backed by a
 real, queryable activity table.
-
-## Known issue
-
-`app.py` currently imports `from database_fixed import DatabaseManager` — that module
-doesn't exist in this repo (every other file correctly imports from `database.py`). This
-needs a one-line fix (`database_fixed` → `database`) before the app will run.
