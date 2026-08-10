@@ -126,7 +126,7 @@ hardware, OS, network, application, and environment issues; testing and validati
 AI-generated code against real data and edge cases; troubleshooting corrupted archives,
 Excel failures, data mismatches, and workflow issues in live financial operations. My
 approach is systematic isolation (logs, controlled tests, binary-search debugging,
-hypothesis-driven testing) followed by preventive thinking — building safeguards against
+hypothesis-driven testing) followed by preventive thinking, building safeguards against
 recurring failures, not just fixing the immediate one. I maintain controlled Windows/Linux
 environments to support this, so toolchain problems can be isolated from code problems
 during testing.
